@@ -1,6 +1,6 @@
 # General Service FAQ — R. H. Foster Energy
 
-An internal CSR triage reference for plumbing, heating, and fuel service calls. It's a single, self-contained
+An internal CSR triage reference for plumbing, heating, fuel, and heat pump service calls. It's a single, self-contained
 `index.html` file (HTML + CSS + JavaScript) with no build step and no dependencies — open it,
 edit it, push it.
 
@@ -12,7 +12,7 @@ Published via GitHub Pages: https://downeasternman.github.io/plumbingfaq/
 
 ## What it does
 
-- Searchable, filterable list of common plumbing, heating, and fuel call scenarios
+- Searchable, filterable list of common plumbing, heating, fuel, and heat pump call scenarios
 - Each entry shows **Questions to Ask** and **What to Tell the Customer**
 - Urgency flags and high-visibility **STOP** banners for life-safety situations
 - Live search with typo/synonym handling (e.g. `fawcet` → `faucet`, `lp` → `propane`)

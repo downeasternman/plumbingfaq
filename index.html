@@ -507,7 +507,7 @@
 
 <!-- ─── FOOTER ───────────────────────────────────────────────────────────── -->
 <footer class="site-footer">
-  <span>R. H. Foster Energy</span> &mdash; Internal CSR Reference &mdash; General Service FAQ v0.3 &mdash; Last reviewed June 2026 &mdash; Not for customer distribution
+  <span>R. H. Foster Energy</span> &mdash; Internal CSR Reference &mdash; General Service FAQ v0.4 &mdash; Last reviewed June 2026 &mdash; Not for customer distribution
 </footer>
 
 <!-- ═══════════════════════════════════════════════════════════════════════ -->
@@ -2144,6 +2144,95 @@ const FAQ = [
     email: "", phone: ""
   },
 
+  // ── HEAT PUMPS & MINI-SPLITS ───────────────────────────────────────────
+  {
+    id: "hp-defrost-cycle",
+    category: "Heat Pumps",
+    title: "Blowing cold air in heating mode (Defrost Cycle)",
+    desc: "Unit temporarily blows cool air, stops blowing, or outdoor unit is steaming.",
+    urgency: null,
+    urgencyLabel: null,
+    questions: [
+      "How long has it been blowing cool air or stopped? (Under 15 minutes is likely a defrost cycle)",
+      "Is the remote definitely set to HEAT (sun icon) and not AUTO or COOL?",
+      "Is the outside unit making a loud 'whoosh' sound or steaming?",
+      "Is there a specific light flashing on the indoor unit right now?",
+      "Does the customer have a backup heat source running?",
+    ],
+    script: "In cold weather, heat pumps periodically go into a 'defrost cycle' to melt frost off the outside unit. This is completely normal. The indoor fan will stop or blow slightly cool air for 10 to 15 minutes, and the outdoor unit might even look like it's smoking (it's just steam). Please wait 20 minutes to see if the warm air resumes. If it doesn't, we will get a technician scheduled.",
+    email: "", phone: ""
+  },
+  {
+    id: "hp-outdoor-ice",
+    category: "Heat Pumps",
+    title: "Outdoor unit encased in ice",
+    desc: "The outdoor condenser is completely covered in a thick, solid block of ice.",
+    urgency: "urgent",
+    urgencyLabel: "Urgent — turn off to prevent damage",
+    stopCondition: "Instruct customer to turn unit off immediately",
+    stopUntil: "Stay on the line until the customer confirms the heat pump is turned off at the remote or breaker.",
+    questions: [
+      "Is it just a light white frost, or is it a solid, thick block of clear/white ice?",
+      "Are the fan blades hitting the ice and making a loud grinding noise?",
+      "Has there been freezing rain or a heavy, wet snowstorm recently?",
+      "Does the customer have a backup heating system (boiler, furnace, baseboards)?",
+      "Is the outdoor unit buried in a snowdrift?",
+    ],
+    script: "A light frost is normal, but a solid block of ice means the system's defrost cycle is failing or it's been overwhelmed by weather. Please turn the heat pump OFF right now using your remote or the thermostat. If it keeps running while encased in ice, it can destroy the fan motor and compressor. Switch over to your backup heat if you have it. Do NOT try to chip the ice off with a tool, as you could puncture a refrigerant line. We are getting a tech out to properly thaw and diagnose it.",
+    email: "", phone: ""
+  },
+  {
+    id: "hp-indoor-leak",
+    category: "Heat Pumps",
+    title: "Indoor unit leaking water",
+    desc: "Water dripping from the indoor mini-split head or running down the wall.",
+    urgency: null,
+    urgencyLabel: null,
+    questions: [
+      "Is water dripping from the bottom of the unit, or running down the wall behind it?",
+      "Is the unit currently running in cooling, heating, or dry mode?",
+      "When was the last time the indoor mesh filters were cleaned?",
+      "Is there any risk of property damage to flooring, electronics, or furniture below?",
+      "Is there ice visible on the coils if they lift the front cover?",
+    ],
+    script: "Please turn the unit off using the remote—this stops the condensation process so the dripping will stop. Put a towel or a bucket underneath it for now. This is usually caused by a clogged condensate drain tube or dirty filters causing the internal coil to freeze and melt. If you feel comfortable doing so, you can open the front cover and rinse off the mesh filters in the sink, but we'll get a technician scheduled to clear the drain line.",
+    email: "", phone: ""
+  },
+  {
+    id: "hp-remote-unresponsive",
+    category: "Heat Pumps",
+    title: "Unit not responding to remote",
+    desc: "Indoor head doesn't beep, turn on, or change settings when using the remote.",
+    urgency: null,
+    urgencyLabel: null,
+    questions: [
+      "Are the batteries in the remote fresh? (Even if the screen is on, weak batteries won't transmit)",
+      "Is the remote screen on and displaying numbers/icons?",
+      "Are they pointing the remote directly at the unit with a clear line of sight?",
+      "Has the breaker for the heat pump been checked or reset?",
+      "Did the home recently have a power surge or outage?",
+    ],
+    script: "Often, this is just a communication glitch between the remote and the head, or the batteries are just weak enough to not send a signal. Please try putting brand new batteries in the remote. If that doesn't work, go to your main electrical panel, flip the circuit breaker for the heat pump completely OFF, wait 60 seconds, and flip it back ON. This does a 'hard reset' on the computer board. If it still won't respond after that, we'll get a technician out to look at it.",
+    email: "", phone: ""
+  },
+  {
+    id: "hp-blinking-lights",
+    category: "Heat Pumps",
+    title: "Blinking lights or error code",
+    desc: "Flashing indicator lights (Timer, Run, Defrost) or alphanumeric error code displayed.",
+    urgency: null,
+    urgencyLabel: null,
+    questions: [
+      "Is there a digital display showing letters and numbers (like E-4 or CH-05)?",
+      "If there is no screen, which specific lights are blinking? (e.g., Timer light blinking 5 times, Pause, then 5 times)",
+      "Is the unit running at all, or completely locked out?",
+      "Have they tried resetting the breaker for 60 seconds?",
+      "What brand is the heat pump? (Mitsubishi, Fujitsu, Daikin, LG, etc.)",
+    ],
+    script: "Blinking lights are the heat pump's way of telling us exactly what is wrong—it's an error code. Please make a note of exactly which lights are blinking, what color they are, and how many times they flash in a row before pausing. If there is a number code, write that down. This information is incredibly helpful because it tells our technician exactly what parts they might need to bring. You can try resetting the breaker for 60 seconds to see if it clears the error, but I will get this dispatch request submitted for you right now.",
+    email: "", phone: ""
+  },
+
   // ── SEPTIC (remaining) ─────────────────────────────────────────────────
   {
     id: "septic-drain-field",
@@ -2198,6 +2287,11 @@ const FAQ = [
     'co': 'carbon monoxide',
     'lockout': 'lockout reset burner boiler',
     'run out': 'runout empty tank oil propane',
+    'mini split': 'heat pump mini split',
+    'minisplit': 'heat pump mini split',
+    'mitsubishi': 'heat pump mitsubishi',
+    'fujitsu': 'heat pump fujitsu',
+    'defrost': 'heat pump defrost',
   };
 
   function normalizeSearchText(text) {
