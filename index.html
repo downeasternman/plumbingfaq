@@ -261,13 +261,63 @@
     border-color: var(--pill-active-bg);
   }
 
-  /* ─── RESULTS COUNT ──────────────────────────────────────────────────── */
+  /* ─── RESULTS BAR ────────────────────────────────────────────────────── */
+  .results-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 12px;
+    min-height: 32px;
+  }
   .results-meta {
     font-size: 12px;
     color: var(--ink-3);
-    margin-bottom: 12px;
     min-height: 18px;
     letter-spacing: 0.1px;
+    flex: 1;
+    min-width: 0;
+  }
+  .print-actions {
+    display: flex;
+    flex-shrink: 0;
+    gap: 8px;
+  }
+  .print-btn {
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 7px 14px;
+    border: 1.5px solid var(--rule);
+    border-radius: var(--radius);
+    background: var(--white);
+    color: var(--ink-2);
+    font-family: var(--font-sans);
+    font-size: 12.5px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all var(--transition);
+  }
+  .print-btn:hover {
+    border-color: var(--red);
+    color: var(--red);
+    background: var(--red-light);
+  }
+  .print-btn:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+    border-color: var(--rule);
+    color: var(--ink-3);
+    background: var(--white);
+  }
+  .print-btn svg {
+    width: 15px;
+    height: 15px;
+  }
+
+  .print-summary {
+    display: none;
   }
 
   /* ─── FAQ ITEMS ──────────────────────────────────────────────────────── */
@@ -509,9 +559,27 @@
     .pills,
     .trade-filters-wrap,
     .category-pills-wrap,
-    .results-meta,
+    .results-bar,
     .search-clear,
-    .faq-chevron { display: none !important; }
+    .faq-chevron,
+    .empty-state { display: none !important; }
+    .print-summary {
+      display: block !important;
+      margin-bottom: 16px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid #ccc;
+    }
+    .print-summary h2 {
+      font-size: 16px;
+      font-weight: 800;
+      color: var(--ink);
+      margin-bottom: 4px;
+    }
+    .print-summary p {
+      font-size: 11.5px;
+      color: var(--ink-2);
+      line-height: 1.45;
+    }
     .site-header {
       position: static;
       box-shadow: none;
@@ -527,10 +595,19 @@
       margin-bottom: 8px;
       box-shadow: none;
     }
-    .faq-item.hidden { display: block !important; }
-    .faq-body {
+    .faq-item.hidden { display: none !important; }
+    .faq-item.print-target {
+      display: block !important;
+    }
+    .faq-item.print-skip { display: none !important; }
+    .faq-item.print-target .faq-body {
       max-height: none !important;
       overflow: visible !important;
+    }
+    .faq-desc {
+      white-space: normal !important;
+      overflow: visible !important;
+      text-overflow: clip !important;
     }
     .faq-trigger { pointer-events: none; }
     .faq-item.open .faq-trigger,
@@ -588,8 +665,25 @@
     <div class="pills" id="pills"></div>
   </div>
 
-  <!-- Results count -->
-  <div class="results-meta" id="resultsMeta"></div>
+  <!-- Results + print -->
+  <div class="print-summary" id="printSummary" aria-hidden="true"></div>
+  <div class="results-bar">
+    <div class="results-meta" id="resultsMeta"></div>
+    <div class="print-actions">
+      <button type="button" class="print-btn" id="printSelectedBtn" title="Print the open topic">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2"/><rect x="6" y="14" width="12" height="8"/>
+        </svg>
+        Print selected
+      </button>
+      <button type="button" class="print-btn" id="printAllBtn" title="Print every topic in the FAQ">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2"/><rect x="6" y="14" width="12" height="8"/>
+        </svg>
+        Print all
+      </button>
+    </div>
+  </div>
 
   <!-- FAQ list -->
   <div class="faq-list" id="faqList"></div>
@@ -605,7 +699,7 @@
 
 <!-- ─── FOOTER ───────────────────────────────────────────────────────────── -->
 <footer class="site-footer">
-  <span>R. H. Foster Energy</span> &mdash; Internal CSR Reference &mdash; General Service FAQ v0.16.1 &mdash; Last reviewed June 2026 &mdash; Not for customer distribution
+  <span>R. H. Foster Energy</span> &mdash; Internal CSR Reference &mdash; General Service FAQ v0.17.1 &mdash; Last reviewed June 2026 &mdash; Not for customer distribution
 </footer>
 
 <!-- ═══════════════════════════════════════════════════════════════════════ -->
@@ -2882,6 +2976,9 @@ const FAQ = [
   const pillsEl    = document.getElementById('pills');
   const listEl     = document.getElementById('faqList');
   const metaEl     = document.getElementById('resultsMeta');
+  const printSelectedBtn = document.getElementById('printSelectedBtn');
+  const printAllBtn      = document.getElementById('printAllBtn');
+  const printSummaryEl = document.getElementById('printSummary');
   const emptyEl    = document.getElementById('emptyState');
 
   let activeCategory = 'All';
@@ -3189,6 +3286,7 @@ const FAQ = [
         trigger.setAttribute('aria-expanded', 'true');
         body.style.maxHeight = body.scrollHeight + 'px';
       }
+      updatePrintButtonStates();
     });
 
     listEl.appendChild(el);
@@ -3243,6 +3341,98 @@ const FAQ = [
     }
 
     emptyEl.style.display = visible === 0 ? 'block' : 'none';
+    updatePrintButtonStates();
+  }
+
+  function getOpenVisibleItem() {
+    return document.querySelector('.faq-item.open:not(.hidden)');
+  }
+
+  function updatePrintButtonStates() {
+    printSelectedBtn.disabled = !getOpenVisibleItem();
+  }
+
+  function updatePrintSummary(count, mode, subtitle) {
+    const dateStr = new Date().toLocaleString(undefined, {
+      dateStyle: 'medium',
+      timeStyle: 'short',
+    });
+    const scope = mode === 'all'
+      ? 'Full catalog'
+      : (subtitle || 'Selected topic');
+    printSummaryEl.innerHTML = `
+      <h2>General Service FAQ — Printout</h2>
+      <p><strong>${count}</strong> topic${count !== 1 ? 's' : ''} · ${scope}</p>
+      <p>Printed ${dateStr} · Internal CSR reference — not for customer distribution</p>
+    `;
+  }
+
+  function runPrint(mode) {
+    const allItems = [...document.querySelectorAll('.faq-item')];
+    let itemsToPrint;
+
+    if (mode === 'all') {
+      itemsToPrint = allItems;
+    } else {
+      const selected = getOpenVisibleItem();
+      if (!selected) return;
+      itemsToPrint = [selected];
+    }
+
+    const restoreState = allItems.map(el => {
+      const body = el.querySelector('.faq-body');
+      const trigger = el.querySelector('.faq-trigger');
+      return {
+        el,
+        wasOpen: el.classList.contains('open'),
+        maxHeight: body.style.maxHeight,
+        ariaExpanded: trigger.getAttribute('aria-expanded'),
+      };
+    });
+
+    const printSet = new Set(itemsToPrint);
+    allItems.forEach(el => {
+      el.classList.remove('print-target', 'print-skip');
+      if (printSet.has(el)) {
+        el.classList.add('print-target');
+        const body = el.querySelector('.faq-body');
+        const trigger = el.querySelector('.faq-trigger');
+        el.classList.add('open');
+        body.style.maxHeight = 'none';
+        trigger.setAttribute('aria-expanded', 'true');
+      } else {
+        el.classList.add('print-skip');
+      }
+    });
+
+    const subtitle = mode === 'selected'
+      ? itemsToPrint[0].querySelector('.faq-title').textContent
+      : '';
+    updatePrintSummary(itemsToPrint.length, mode, subtitle);
+    printSummaryEl.setAttribute('aria-hidden', 'false');
+
+    const cleanup = () => {
+      restoreState.forEach(({ el, wasOpen, maxHeight, ariaExpanded }) => {
+        const body = el.querySelector('.faq-body');
+        const trigger = el.querySelector('.faq-trigger');
+        el.classList.remove('print-target', 'print-skip');
+        if (wasOpen) {
+          el.classList.add('open');
+          trigger.setAttribute('aria-expanded', ariaExpanded || 'true');
+          body.style.maxHeight = maxHeight || body.scrollHeight + 'px';
+        } else {
+          el.classList.remove('open');
+          trigger.setAttribute('aria-expanded', ariaExpanded || 'false');
+          body.style.maxHeight = maxHeight || null;
+        }
+      });
+      printSummaryEl.setAttribute('aria-hidden', 'true');
+      updatePrintButtonStates();
+      window.removeEventListener('afterprint', cleanup);
+    };
+
+    window.addEventListener('afterprint', cleanup);
+    window.print();
   }
 
   function highlight(text, q) {
@@ -3267,6 +3457,9 @@ const FAQ = [
     searchEl.focus();
     applyFilters();
   });
+
+  printSelectedBtn.addEventListener('click', () => runPrint('selected'));
+  printAllBtn.addEventListener('click', () => runPrint('all'));
 
   // ── Init ─────────────────────────────────────────────────────────────
   applyFilters();
