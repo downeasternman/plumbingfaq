@@ -150,16 +150,81 @@
     gap: 8px;
     margin-bottom: 24px;
   }
-  .trade-pills-wrap {
+  .trade-filters-wrap {
     margin-bottom: 12px;
   }
-  .trade-pills-label {
+  .trade-filters-label {
     font-size: 11px;
     font-weight: 700;
     letter-spacing: 0.6px;
     text-transform: uppercase;
     color: var(--ink-3);
-    margin-bottom: 8px;
+    margin-bottom: 10px;
+  }
+  .trade-switches {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px 18px;
+    margin-bottom: 4px;
+  }
+  .trade-switch {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    user-select: none;
+  }
+  .trade-switch-label {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--ink-2);
+    line-height: 1.2;
+  }
+  .trade-switch-input {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+    pointer-events: none;
+  }
+  .trade-switch-track {
+    position: relative;
+    flex: 0 0 42px;
+    width: 42px;
+    height: 24px;
+    background: var(--pill-bg);
+    border: 1.5px solid var(--rule);
+    border-radius: 100px;
+    transition: background var(--transition), border-color var(--transition);
+  }
+  .trade-switch-track::after {
+    content: '';
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 17px;
+    height: 17px;
+    background: var(--white);
+    border-radius: 50%;
+    box-shadow: 0 1px 3px rgba(0,0,0,.18);
+    transition: transform var(--transition), background var(--transition);
+  }
+  .trade-switch:hover .trade-switch-track {
+    border-color: var(--red);
+  }
+  .trade-switch-input:focus-visible + .trade-switch-track {
+    outline: 2px solid var(--red);
+    outline-offset: 2px;
+  }
+  .trade-switch-input:checked + .trade-switch-track {
+    background: var(--pill-active-bg);
+    border-color: var(--pill-active-bg);
+  }
+  .trade-switch-input:checked + .trade-switch-track::after {
+    transform: translateX(18px);
+  }
+  .trade-switch-input:checked ~ .trade-switch-label {
+    color: var(--red);
   }
   .category-pills-wrap {
     margin-bottom: 24px;
@@ -442,7 +507,7 @@
   @media print {
     .search-wrap,
     .pills,
-    .trade-pills-wrap,
+    .trade-filters-wrap,
     .category-pills-wrap,
     .results-meta,
     .search-clear,
@@ -512,9 +577,9 @@
   </div>
 
   <!-- Trade filters -->
-  <div class="trade-pills-wrap">
-    <div class="trade-pills-label">Trade</div>
-    <div class="pills" id="tradePills"></div>
+  <div class="trade-filters-wrap">
+    <div class="trade-filters-label">Trade</div>
+    <div class="trade-switches" id="tradeSwitches"></div>
   </div>
 
   <!-- Category pills -->
@@ -540,7 +605,7 @@
 
 <!-- ─── FOOTER ───────────────────────────────────────────────────────────── -->
 <footer class="site-footer">
-  <span>R. H. Foster Energy</span> &mdash; Internal CSR Reference &mdash; General Service FAQ v0.16 &mdash; Last reviewed June 2026 &mdash; Not for customer distribution
+  <span>R. H. Foster Energy</span> &mdash; Internal CSR Reference &mdash; General Service FAQ v0.16.1 &mdash; Last reviewed June 2026 &mdash; Not for customer distribution
 </footer>
 
 <!-- ═══════════════════════════════════════════════════════════════════════ -->
@@ -2813,7 +2878,7 @@ const FAQ = [
 (function () {
   const searchEl   = document.getElementById('search');
   const clearBtn   = document.getElementById('searchClear');
-  const tradePillsEl = document.getElementById('tradePills');
+  const tradeSwitchesEl = document.getElementById('tradeSwitches');
   const pillsEl    = document.getElementById('pills');
   const listEl     = document.getElementById('faqList');
   const metaEl     = document.getElementById('resultsMeta');
@@ -2823,8 +2888,7 @@ const FAQ = [
   let activeTrade    = 'All';
   let searchQuery    = '';
 
-  const TRADE_FILTERS = [
-    { value: 'All', label: 'All' },
+  const TRADE_SWITCHES = [
     { value: 'plumbing', label: 'Plumbing only' },
     { value: 'hvac', label: 'HVAC only' },
     { value: 'propane', label: 'Propane only' },
@@ -2991,18 +3055,49 @@ const FAQ = [
     resizeTimer = setTimeout(recalcOpenAccordion, 100);
   });
 
-  // ── Build trade filter pills ───────────────────────────────────────
-  TRADE_FILTERS.forEach(trade => {
-    const btn = document.createElement('button');
-    btn.className = 'pill' + (trade.value === 'All' ? ' active' : '');
-    btn.textContent = trade.label;
-    btn.addEventListener('click', () => {
-      activeTrade = trade.value;
-      tradePillsEl.querySelectorAll('.pill').forEach(p => p.classList.remove('active'));
-      btn.classList.add('active');
+  // ── Build trade filter switches ────────────────────────────────────
+  const tradeSwitchInputs = [];
+
+  function setActiveTradeSwitch(value) {
+    activeTrade = value;
+    tradeSwitchInputs.forEach(input => {
+      input.checked = value !== 'All' && input.dataset.trade === value;
+    });
+  }
+
+  TRADE_SWITCHES.forEach(trade => {
+    const label = document.createElement('label');
+    label.className = 'trade-switch';
+
+    const input = document.createElement('input');
+    input.type = 'checkbox';
+    input.role = 'switch';
+    input.className = 'trade-switch-input';
+    input.dataset.trade = trade.value;
+    input.setAttribute('aria-label', trade.label);
+
+    const track = document.createElement('span');
+    track.className = 'trade-switch-track';
+    track.setAttribute('aria-hidden', 'true');
+
+    const text = document.createElement('span');
+    text.className = 'trade-switch-label';
+    text.textContent = trade.label;
+
+    input.addEventListener('change', () => {
+      if (input.checked) {
+        setActiveTradeSwitch(trade.value);
+      } else if (activeTrade === trade.value) {
+        setActiveTradeSwitch('All');
+      }
       applyFilters();
     });
-    tradePillsEl.appendChild(btn);
+
+    label.appendChild(input);
+    label.appendChild(track);
+    label.appendChild(text);
+    tradeSwitchesEl.appendChild(label);
+    tradeSwitchInputs.push(input);
   });
 
   // ── Build category list ──────────────────────────────────────────────
@@ -3134,7 +3229,7 @@ const FAQ = [
     recalcOpenAccordion();
 
     const tradeLabel = activeTrade !== 'All'
-      ? TRADE_FILTERS.find(t => t.value === activeTrade).label
+      ? TRADE_SWITCHES.find(t => t.value === activeTrade).label
       : '';
     const parts = [];
     if (visible !== FAQ.length || q || activeCategory !== 'All' || activeTrade !== 'All') {
