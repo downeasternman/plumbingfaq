@@ -150,6 +150,28 @@
     gap: 8px;
     margin-bottom: 24px;
   }
+  .trade-pills-wrap {
+    margin-bottom: 12px;
+  }
+  .trade-pills-label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.6px;
+    text-transform: uppercase;
+    color: var(--ink-3);
+    margin-bottom: 8px;
+  }
+  .category-pills-wrap {
+    margin-bottom: 24px;
+  }
+  .category-pills-label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.6px;
+    text-transform: uppercase;
+    color: var(--ink-3);
+    margin-bottom: 8px;
+  }
   .pill {
     padding: 5px 14px;
     border-radius: 100px;
@@ -420,6 +442,8 @@
   @media print {
     .search-wrap,
     .pills,
+    .trade-pills-wrap,
+    .category-pills-wrap,
     .results-meta,
     .search-clear,
     .faq-chevron { display: none !important; }
@@ -487,8 +511,17 @@
     </button>
   </div>
 
+  <!-- Trade filters -->
+  <div class="trade-pills-wrap">
+    <div class="trade-pills-label">Trade</div>
+    <div class="pills" id="tradePills"></div>
+  </div>
+
   <!-- Category pills -->
-  <div class="pills" id="pills"></div>
+  <div class="category-pills-wrap">
+    <div class="category-pills-label">Category</div>
+    <div class="pills" id="pills"></div>
+  </div>
 
   <!-- Results count -->
   <div class="results-meta" id="resultsMeta"></div>
@@ -507,7 +540,7 @@
 
 <!-- ─── FOOTER ───────────────────────────────────────────────────────────── -->
 <footer class="site-footer">
-  <span>R. H. Foster Energy</span> &mdash; Internal CSR Reference &mdash; General Service FAQ v0.15 &mdash; Last reviewed June 2026 &mdash; Not for customer distribution
+  <span>R. H. Foster Energy</span> &mdash; Internal CSR Reference &mdash; General Service FAQ v0.16 &mdash; Last reviewed June 2026 &mdash; Not for customer distribution
 </footer>
 
 <!-- ═══════════════════════════════════════════════════════════════════════ -->
@@ -521,6 +554,7 @@
 <!--    urgencyLabel: text shown in flag (if urgency set)                    -->
 <!--    stopCondition: optional — imperative STOP banner text (life-safety)  -->
 <!--    stopUntil: optional — what CSR must confirm before proceeding         -->
+<!--    tags:       optional array — plumbing | hvac | propane | oil         -->
 <!--    questions: array of strings — what to ask the customer               -->
 <!--    script:    string — what to tell the customer while they wait        -->
 <!--    -- PHASE 2 fields (not rendered yet, fill in when ready) --          -->
@@ -2779,13 +2813,78 @@ const FAQ = [
 (function () {
   const searchEl   = document.getElementById('search');
   const clearBtn   = document.getElementById('searchClear');
+  const tradePillsEl = document.getElementById('tradePills');
   const pillsEl    = document.getElementById('pills');
   const listEl     = document.getElementById('faqList');
   const metaEl     = document.getElementById('resultsMeta');
   const emptyEl    = document.getElementById('emptyState');
 
   let activeCategory = 'All';
+  let activeTrade    = 'All';
   let searchQuery    = '';
+
+  const TRADE_FILTERS = [
+    { value: 'All', label: 'All' },
+    { value: 'plumbing', label: 'Plumbing only' },
+    { value: 'hvac', label: 'HVAC only' },
+    { value: 'propane', label: 'Propane only' },
+    { value: 'oil', label: 'Oil only' },
+  ];
+
+  const TAG_BY_CATEGORY = {
+    'Water Heater': ['plumbing'],
+    'Pipes & Leaks': ['plumbing'],
+    'Drains': ['plumbing'],
+    'Fixtures': ['plumbing'],
+    'Water Supply': ['plumbing'],
+    'Water Quality': ['plumbing'],
+    'Basement & Sump': ['plumbing'],
+    'Septic': ['plumbing'],
+    'Renovation': ['plumbing'],
+    'Outdoor & Seasonal': ['plumbing'],
+    'Boiler & Heating': ['hvac', 'oil', 'propane'],
+    'Furnaces & Forced Air': ['hvac', 'oil', 'propane'],
+    'Heat Pumps': ['hvac'],
+    'Thermostats & Controls': ['hvac'],
+    'Central A/C': ['hvac'],
+    'Airflow & Ductwork': ['hvac'],
+    'Routine Maintenance': ['hvac'],
+    'Gas & Propane': ['hvac', 'propane', 'oil'],
+  };
+
+  const TAG_BY_ID = {
+    'wh-no-hot-water': ['plumbing', 'hvac', 'oil', 'propane'],
+    'wh-tankless-issue': ['plumbing', 'hvac', 'oil', 'propane'],
+    'gas-appliance-line': ['plumbing', 'propane', 'hvac'],
+    'gas-dryer-line': ['plumbing', 'propane', 'hvac'],
+    'gas-generator-hookup': ['plumbing', 'propane'],
+    'propane-regulator-ice': ['propane', 'hvac'],
+    'propane-empty-wont-ignite': ['propane', 'hvac'],
+    'propane-line-damage': ['propane', 'hvac'],
+    'propane-tank-set': ['propane'],
+    'oil-burner-lockout': ['hvac', 'oil'],
+    'oil-runout-airbound': ['hvac', 'oil'],
+    'oil-soot-smoke': ['hvac', 'oil'],
+    'oil-odor-leak': ['hvac', 'oil'],
+    'gas-fireplace-soot': ['propane', 'hvac'],
+    'boiler-expansion-tank': ['hvac'],
+    'boiler-zone-no-heat': ['hvac'],
+    'boiler-baseboard-leak': ['hvac'],
+    'boiler-pressure': ['hvac'],
+    'maint-water-heater': ['plumbing'],
+    'maint-boiler-furnace': ['hvac', 'oil', 'propane'],
+    'maint-heat-pump': ['hvac'],
+    'maint-central-ac': ['hvac'],
+    'maint-generator': ['hvac', 'propane'],
+  };
+
+  function resolveTags(item) {
+    if (item.tags && item.tags.length) return item.tags;
+    if (TAG_BY_ID[item.id]) return TAG_BY_ID[item.id];
+    return TAG_BY_CATEGORY[item.category] || ['plumbing'];
+  }
+
+  const TRADE_LABELS = { plumbing: 'plumbing', hvac: 'hvac', propane: 'propane', oil: 'oil' };
 
   const SEARCH_ALIASES = {
     'fawcet': 'faucet',
@@ -2858,10 +2957,12 @@ const FAQ = [
   }
 
   function buildSearchIndex(item) {
+    const tags = resolveTags(item);
     return normalizeSearchText([
       item.title,
       item.desc,
       item.category,
+      tags.map(t => TRADE_LABELS[t] || t).join(' '),
       item.urgencyLabel || '',
       item.stopCondition || '',
       item.questions.join(' '),
@@ -2890,6 +2991,20 @@ const FAQ = [
     resizeTimer = setTimeout(recalcOpenAccordion, 100);
   });
 
+  // ── Build trade filter pills ───────────────────────────────────────
+  TRADE_FILTERS.forEach(trade => {
+    const btn = document.createElement('button');
+    btn.className = 'pill' + (trade.value === 'All' ? ' active' : '');
+    btn.textContent = trade.label;
+    btn.addEventListener('click', () => {
+      activeTrade = trade.value;
+      tradePillsEl.querySelectorAll('.pill').forEach(p => p.classList.remove('active'));
+      btn.classList.add('active');
+      applyFilters();
+    });
+    tradePillsEl.appendChild(btn);
+  });
+
   // ── Build category list ──────────────────────────────────────────────
   const allCats = ['All', ...new Set(FAQ.map(f => f.category))];
 
@@ -2899,7 +3014,7 @@ const FAQ = [
     btn.textContent = cat;
     btn.addEventListener('click', () => {
       activeCategory = cat;
-      document.querySelectorAll('.pill').forEach(p => p.classList.remove('active'));
+      pillsEl.querySelectorAll('.pill').forEach(p => p.classList.remove('active'));
       btn.classList.add('active');
       applyFilters();
     });
@@ -2912,6 +3027,7 @@ const FAQ = [
     el.className = 'faq-item';
     el.dataset.id = item.id;
     el.dataset.category = item.category;
+    el.dataset.tags = resolveTags(item).join(',');
     el.dataset.search = buildSearchIndex(item);
 
     let urgencyHtml = '';
@@ -2995,7 +3111,9 @@ const FAQ = [
 
       const catMatch = activeCategory === 'All' || el.dataset.category === activeCategory;
       const searchMatch = searchMatches(el.dataset.search, q);
-      const show = catMatch && searchMatch;
+      const tags = el.dataset.tags ? el.dataset.tags.split(',') : [];
+      const tradeMatch = activeTrade === 'All' || tags.includes(activeTrade);
+      const show = catMatch && searchMatch && tradeMatch;
 
       el.classList.toggle('hidden', !show);
       if (show) visible++;
@@ -3015,9 +3133,19 @@ const FAQ = [
     // Recompute open item height after filter
     recalcOpenAccordion();
 
-    metaEl.textContent = q || activeCategory !== 'All'
-      ? `${visible} result${visible !== 1 ? 's' : ''}${activeCategory !== 'All' ? ` in ${activeCategory}` : ''}${q ? ` for "${q}"` : ''}`
-      : `${FAQ.length} topics`;
+    const tradeLabel = activeTrade !== 'All'
+      ? TRADE_FILTERS.find(t => t.value === activeTrade).label
+      : '';
+    const parts = [];
+    if (visible !== FAQ.length || q || activeCategory !== 'All' || activeTrade !== 'All') {
+      parts.push(`${visible} result${visible !== 1 ? 's' : ''}`);
+      if (tradeLabel) parts.push(tradeLabel);
+      if (activeCategory !== 'All') parts.push(`in ${activeCategory}`);
+      if (q) parts.push(`for "${q}"`);
+      metaEl.textContent = parts.join(' ');
+    } else {
+      metaEl.textContent = `${FAQ.length} topics`;
+    }
 
     emptyEl.style.display = visible === 0 ? 'block' : 'none';
   }
