@@ -507,7 +507,7 @@
 
 <!-- ─── FOOTER ───────────────────────────────────────────────────────────── -->
 <footer class="site-footer">
-  <span>R. H. Foster Energy</span> &mdash; Internal CSR Reference &mdash; General Service FAQ v0.9 &mdash; Last reviewed June 2026 &mdash; Not for customer distribution
+  <span>R. H. Foster Energy</span> &mdash; Internal CSR Reference &mdash; General Service FAQ v0.10 &mdash; Last reviewed June 2026 &mdash; Not for customer distribution
 </footer>
 
 <!-- ═══════════════════════════════════════════════════════════════════════ -->
@@ -2495,6 +2495,75 @@ const FAQ = [
     email: "", phone: ""
   },
 
+  // ── AIRFLOW, DUCTWORK & ODORS ──────────────────────────────────────────
+  {
+    id: "duct-weak-airflow",
+    category: "Airflow & Ductwork",
+    title: "Weak or no airflow from vents",
+    desc: "The system is running and making noise, but little to no air is coming out of the registers.",
+    urgency: null,
+    urgencyLabel: null,
+    questions: [
+      "Is this happening at every vent in the house, or just in one specific room/area?",
+      "Are the louvers on the vent physically open?",
+      "When was the indoor air filter last changed? (A plugged filter chokes the whole system)",
+      "If it's just one room: is there a manual damper handle on the ductwork in the basement that might have been bumped?",
+      "Is there a large piece of furniture or a rug covering the large return air grille?",
+    ],
+    script: "First, let's rule out the most common culprit: a dirty air filter. If the filter is clogged, the fan can't push air through the house. If the filter is clean and it's just one room that has no air, a duct may have disconnected in the basement or attic, or a manual damper might have accidentally been bumped closed. While we get a tech scheduled, please double-check that the vents in that room are fully open and not blocked by furniture.",
+    email: "", phone: ""
+  },
+  {
+    id: "duct-hot-cold-spots",
+    category: "Airflow & Ductwork",
+    title: "Hot and cold spots (uneven temperatures)",
+    desc: "One room or floor is significantly hotter or colder than the rest of the house.",
+    urgency: null,
+    urgencyLabel: null,
+    questions: [
+      "Is this a brand new issue, or has this room always struggled to heat/cool?",
+      "Is the door to that room usually kept closed?",
+      "Are there lots of windows or poor insulation in that specific room?",
+      "Does the home have a zoned system (multiple thermostats for one unit)?",
+      "Are the vents in that room blowing air as strongly as the rest of the house?",
+    ],
+    script: "Uneven temperatures are very common, especially in two-story homes. If this room has always struggled, it might be a duct sizing or balancing issue. If it's a brand new problem, a duct may have fallen off or crushed in the attic or crawlspace. In the meantime, try keeping the door to that room wide open—if there is no return vent in that room, the air can't circulate back to the furnace when the door is closed. We will get an HVAC tech out to investigate the ductwork.",
+    email: "", phone: ""
+  },
+  {
+    id: "duct-odors",
+    category: "Airflow & Ductwork",
+    title: "Strange odors coming from vents",
+    desc: "Musty, 'dirty sock', or dead animal smell blowing out when the fan kicks on.",
+    urgency: null,
+    urgencyLabel: null,
+    questions: [
+      "What does it smell like? (Mold/musty, a locker room, or a decaying animal?)",
+      "Is there any smell of gas, melting plastic, or smoke? (If yes, escalate to emergency)",
+      "Does the smell happen constantly, or only the exact moment the fan kicks on?",
+      "Have you checked the air filter to see if it is wet or smells bad?",
+      "Are there any visible signs of mice or pests near the furnace or in the basement?",
+    ],
+    script: "If you ever smell gas, smoke, or burning plastic, let me know immediately so we can get you safely out of the house. If it smells like a 'dirty locker room' or musty gym socks, that is a common issue caused by harmless but smelly bacteria growing on the dark, damp indoor cooling coil—our tech can perform a chemical coil cleaning to fix it. If it smells like a decaying animal, a pest may have gotten into the ductwork. Please do not spray aerosols or air freshener directly into the intake vent, as that can damage the system. We'll get someone scheduled.",
+    email: "", phone: ""
+  },
+  {
+    id: "duct-noisy-popping",
+    category: "Airflow & Ductwork",
+    title: "Noisy ductwork (popping, banging, or whistling)",
+    desc: "Loud metallic pops when system starts/stops, or a high-pitched whistle from the grilles.",
+    urgency: null,
+    urgencyLabel: null,
+    questions: [
+      "Is it a loud metallic 'pop/bang' right when the fan turns on or off?",
+      "Is it a high-pitched whistling sound?",
+      "If it's whistling, what kind of air filter are you using? (A thick, expensive high-MERV filter?)",
+      "Has anyone recently closed off several vents in unused rooms?",
+    ],
+    script: "If you are hearing a loud metallic 'pop' when the system turns on and off, that is usually called 'oil-canning.' It's just the sheet metal expanding and contracting with temperature and pressure changes, and while annoying, it's generally harmless. If you are hearing a high-pitched whistle, the system is likely starving for air. If you recently put in a very expensive, high-allergen air filter, it might actually be too thick for your system to breathe through. Try swapping it for a cheaper, basic fiberglass filter to see if the whistle stops. I will get a note over to the tech to check your duct pressures.",
+    email: "", phone: ""
+  },
+
   // ── SEPTIC (remaining) ─────────────────────────────────────────────────
   {
     id: "septic-drain-field",
@@ -2562,6 +2631,9 @@ const FAQ = [
     'ac': 'central air conditioning',
     'air conditioner': 'central air conditioning ac',
     'condenser': 'central air conditioning outdoor unit',
+    'ductwork': 'airflow duct vent',
+    'duct': 'airflow duct vent',
+    'musty': 'odor smell duct vent',
   };
 
   function normalizeSearchText(text) {
