@@ -507,7 +507,7 @@
 
 <!-- ─── FOOTER ───────────────────────────────────────────────────────────── -->
 <footer class="site-footer">
-  <span>R. H. Foster Energy</span> &mdash; Internal CSR Reference &mdash; General Service FAQ v0.10 &mdash; Last reviewed June 2026 &mdash; Not for customer distribution
+  <span>R. H. Foster Energy</span> &mdash; Internal CSR Reference &mdash; General Service FAQ v0.11 &mdash; Last reviewed June 2026 &mdash; Not for customer distribution
 </footer>
 
 <!-- ═══════════════════════════════════════════════════════════════════════ -->
@@ -2162,6 +2162,25 @@ const FAQ = [
     script: "Boiler replacement is a significant investment and the right sizing matters a lot. A tech will need to do a heat load assessment before recommending a unit. I'll get this to the team and someone will call to schedule a site visit and discuss options.",
     email: "", phone: ""
   },
+  {
+    id: "oil-odor-leak",
+    category: "Boiler & Heating",
+    title: "Fuel oil smell in house or oil leak",
+    desc: "Strong odor of unburned heating oil, or visible oil leaking near the tank, filter, or burner.",
+    urgency: "urgent",
+    urgencyLabel: "Urgent — environmental and fire hazard",
+    stopCondition: "Instruct customer to turn off burner if actively leaking",
+    stopUntil: "Stay on the line until the customer confirms the emergency shutoff switch is OFF if there is visible oil pooling on the floor.",
+    questions: [
+      "Is it a faint lingering odor, or a very strong smell of fresh oil?",
+      "Can you see any active dripping or pooling oil near the tank, the copper line, or the boiler/furnace?",
+      "Did you just receive an oil delivery today? (Sometimes a faint odor lingers after a fill)",
+      "Is the heating equipment currently running?",
+      "Are any smoke or carbon monoxide detectors going off?",
+    ],
+    script: "If you see an active oil leak on the floor, please go to your emergency shutoff switch—usually a red switch at the top of your basement stairs—and turn it OFF immediately. This stops the burner from pulling more oil through the lines. If it's just a faint smell right after a delivery, it should dissipate in a few hours, but a strong smell or a visible puddle requires a technician right away. Please open some windows to ventilate the area, and keep pets and people away from the spill. We are getting a technician dispatched.",
+    email: "", phone: ""
+  },
 
   // ── HEAT PUMPS & MINI-SPLITS ───────────────────────────────────────────
   {
@@ -2634,6 +2653,8 @@ const FAQ = [
     'ductwork': 'airflow duct vent',
     'duct': 'airflow duct vent',
     'musty': 'odor smell duct vent',
+    'fuel oil': 'oil leak odor heating',
+    'oil smell': 'oil leak odor heating',
   };
 
   function normalizeSearchText(text) {
