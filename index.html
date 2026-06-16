@@ -23,7 +23,6 @@
     --shadow:    0 1px 4px rgba(0,0,0,.08), 0 3px 12px rgba(0,0,0,.05);
     --shadow-open: 0 2px 16px rgba(0,0,0,.10);
     --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
-    --font-mono: 'Roboto Mono', monospace;
     --transition: 0.22s ease;
   }
 
@@ -2197,7 +2196,6 @@ const FAQ = [
     'clogged': 'clog drain',
     'backing up': 'sewer backup drain',
     'co': 'carbon monoxide',
-    'carbon monoxide': 'carbon monoxide co',
     'lockout': 'lockout reset burner boiler',
     'run out': 'runout empty tank oil propane',
   };
@@ -2213,13 +2211,17 @@ const FAQ = [
 
   function expandAliases(query) {
     let normalized = normalizeSearchText(query);
+    if (!normalized) return normalized;
+    // Replace aliases only on whole-word boundaries so short aliases
+    // (e.g. "co", "lp") never match inside longer words like "cold" or "help".
     Object.entries(SEARCH_ALIASES).forEach(([alias, replacement]) => {
       const aliasNorm = normalizeSearchText(alias);
-      if (aliasNorm && normalized.includes(aliasNorm)) {
-        normalized = normalized.replace(aliasNorm, normalizeSearchText(replacement));
-      }
+      if (!aliasNorm) return;
+      const escaped = aliasNorm.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+      const pattern = new RegExp(`\\b${escaped}\\b`, 'g');
+      normalized = normalized.replace(pattern, normalizeSearchText(replacement));
     });
-    return normalized;
+    return normalized.replace(/\s+/g, ' ').trim();
   }
 
   function buildSearchIndex(item) {
