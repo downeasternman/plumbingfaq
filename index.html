@@ -507,7 +507,7 @@
 
 <!-- ─── FOOTER ───────────────────────────────────────────────────────────── -->
 <footer class="site-footer">
-  <span>R. H. Foster Energy</span> &mdash; Internal CSR Reference &mdash; General Service FAQ v0.4 &mdash; Last reviewed June 2026 &mdash; Not for customer distribution
+  <span>R. H. Foster Energy</span> &mdash; Internal CSR Reference &mdash; General Service FAQ v0.5 &mdash; Last reviewed June 2026 &mdash; Not for customer distribution
 </footer>
 
 <!-- ═══════════════════════════════════════════════════════════════════════ -->
@@ -2233,6 +2233,79 @@ const FAQ = [
     email: "", phone: ""
   },
 
+  // ── FURNACES & FORCED AIR HEATING ──────────────────────────────────────
+  {
+    id: "furnace-short-cycling",
+    category: "Furnaces & Forced Air",
+    title: "Furnace short-cycling (turning on and off quickly)",
+    desc: "The furnace turns on, runs for a few minutes, shuts off, and repeats.",
+    urgency: null,
+    urgencyLabel: null,
+    questions: [
+      "How long does the furnace run before shutting off?",
+      "When was the last time the indoor air filter was changed?",
+      "Are the return vents (where air gets sucked in) blocked by furniture or rugs?",
+      "Is the air coming out of the vents warm, or just lukewarm/cool?",
+      "What fuel type — oil, natural gas, or propane?",
+    ],
+    script: "The most common cause of short-cycling is a completely clogged air filter. When the filter is dirty, the furnace can't breathe, so it overheats and a safety switch shuts it down. Once it cools off, it tries again. While you wait for our tech, please check your air filter. If it is caked in dust, turn the furnace off, pull the filter out, and see if the furnace stays running without it for a few minutes. If that fixes it, you just need a new filter!",
+    email: "", phone: ""
+  },
+  {
+    id: "furnace-dead-no-power",
+    category: "Furnaces & Forced Air",
+    title: "Furnace completely dead (no sounds, no fan)",
+    desc: "System is completely unresponsive. Thermostat may also be blank.",
+    urgency: "urgent",
+    urgencyLabel: "Urgent — no heat in cold weather",
+    questions: [
+      "Is the screen on the thermostat blank, or does it have power?",
+      "Did anyone accidentally flip the emergency shutoff switch? (Usually a red light switch at the top of the basement stairs or near the unit)",
+      "Has the circuit breaker in the main electrical panel been checked?",
+      "What fuel type — oil, gas, or propane?",
+      "Is it possible the batteries in the thermostat are completely dead?",
+    ],
+    script: "Before we send a tech out, please do two quick checks: First, look for a switch that looks like a regular light switch with a red cover plate—usually near the furnace or at the top of the basement stairs. It's the emergency shutoff, and it often gets bumped by accident. Make sure it's turned ON. Second, check your main circuit breaker panel. If both of those are fine, we will treat this as a priority no-heat call and get someone out to you.",
+    email: "", phone: ""
+  },
+  {
+    id: "furnace-blowing-cold",
+    category: "Furnaces & Forced Air",
+    title: "Furnace running but blowing cold air",
+    desc: "The fan is pushing air through the vents, but the air is not warm.",
+    urgency: "urgent",
+    urgencyLabel: "Urgent — no heat in cold weather",
+    questions: [
+      "What fuel type — oil, gas, or propane?",
+      "If oil or propane, what does the tank gauge read right now?",
+      "Has anyone tried pressing the reset button on the burner? (If oil)",
+      "If gas/propane, can you see an error code flashing through the little sight-glass window on the bottom door?",
+      "Are any carbon monoxide detectors going off right now?",
+    ],
+    script: "If any carbon monoxide detectors are going off, get everyone out of the house immediately and call 911—do not try to reset the furnace. If it's safe, check your oil or propane tank gauge to make sure you haven't run out of fuel. If it's an oil furnace, you can press the red reset button exactly once. If it doesn't fire up, or if you have a gas/propane system, do not keep trying to reset it. We are getting a technician dispatched to you.",
+    email: "", phone: ""
+  },
+  {
+    id: "furnace-burning-odor",
+    category: "Furnaces & Forced Air",
+    title: "Burning odor from vents",
+    desc: "Smell of burning dust, melting plastic, or electrical burning when furnace runs.",
+    urgency: "emergency",
+    urgencyLabel: "Emergency — shut off if electrical or plastic smell",
+    stopCondition: "Shut off furnace if smell is electrical or plastic",
+    stopUntil: "If the smell is like hot plastic or electrical burning, stay on the line until the customer confirms the furnace is off at the thermostat or emergency shutoff.",
+    questions: [
+      "What does the smell resemble — dusty/burning dust, hot plastic, or electrical burning?",
+      "Did this start on the first furnace run of the season, or suddenly during normal use?",
+      "Is there any visible smoke coming from vents?",
+      "Are any carbon monoxide detectors going off?",
+      "What fuel type — oil, natural gas, or propane?",
+      "Has anything been stored near the furnace recently (plastic, chemicals, laundry)?",
+    ],
+    script: "If any carbon monoxide detectors are going off, get everyone out of the house and call 911. A light dusty smell on the first run of the season is often just dust burning off the heat exchanger and usually clears within an hour. But if the smell is like hot plastic, rubber, or electrical burning, turn the furnace off immediately at the thermostat or the emergency shutoff switch and do not run it again until a technician inspects it. Open a window for ventilation if needed. We're flagging this as a priority.",
+    email: "", phone: ""
+  },
+
   // ── SEPTIC (remaining) ─────────────────────────────────────────────────
   {
     id: "septic-drain-field",
@@ -2280,7 +2353,8 @@ const FAQ = [
     'hwt': 'water heater',
     'lp': 'propane',
     'lp gas': 'propane',
-    'furnace': 'boiler heating',
+    'furnace': 'furnace forced air heating',
+    'forced air': 'furnace forced air',
     'sewer': 'drain sewer',
     'clogged': 'clog drain',
     'backing up': 'sewer backup drain',
