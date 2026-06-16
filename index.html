@@ -507,7 +507,7 @@
 
 <!-- ─── FOOTER ───────────────────────────────────────────────────────────── -->
 <footer class="site-footer">
-  <span>R. H. Foster Energy</span> &mdash; Internal CSR Reference &mdash; General Service FAQ v0.13 &mdash; Last reviewed June 2026 &mdash; Not for customer distribution
+  <span>R. H. Foster Energy</span> &mdash; Internal CSR Reference &mdash; General Service FAQ v0.14 &mdash; Last reviewed June 2026 &mdash; Not for customer distribution
 </footer>
 
 <!-- ═══════════════════════════════════════════════════════════════════════ -->
@@ -760,6 +760,22 @@ const FAQ = [
     script: "When multiple drains throughout the house are slow at the same time, that usually points to the main drain line or the septic system rather than individual clogs. Please use water sparingly until we can get this figured out — avoid laundry and limit toilet flushes. If the home is on a septic system and the tank is overdue for pumping, that's the most likely culprit — and pumping is handled by a local septic company, not us. Search 'septic pumping' plus the town to find one nearby. If the tank is fine or the home is on town sewer, our plumbing team will dig into the main line.",
     email: "", phone: ""
   },
+  {
+    id: "drain-sewer-smell-ptrap",
+    category: "Drains",
+    title: "Sewer smell in specific room / Dry P-Trap",
+    desc: "Sewer gas odor coming from a bathroom or floor drain that is rarely used.",
+    urgency: null,
+    urgencyLabel: null,
+    questions: [
+      "Which room is the smell coming from?",
+      "Is it a guest bathroom, basement drain, or a sink that doesn't get used very often?",
+      "Are all the drains in that room actually draining normally?",
+      "Have you checked the basement for any active sewage backing up on the floor?",
+    ],
+    script: "If there is no active sewage backing up, this is very likely a dry P-trap. The curved pipe under your drains holds a little bit of water to block sewer gas from coming inside. If a sink or shower isn't used for a few weeks, that water evaporates. Before we send a technician and charge a service fee, please go run both hot and cold water down every drain in that room for about 60 seconds, and pour a bucket of water down any floor drains. If the smell doesn't clear up in a few hours, call us right back and we'll get someone out.",
+    email: "", phone: ""
+  },
 
   // ── TOILETS & FIXTURES ─────────────────────────────────────────────────
   {
@@ -776,6 +792,21 @@ const FAQ = [
       "Is the floor around the base of the toilet dry?",
     ],
     script: "A running toilet is usually a flapper or fill valve issue inside the tank — it's not an emergency but it wastes a surprising amount of water. If you're comfortable, lift the tank lid and look: if the flapper (the rubber flap at the bottom) isn't seating flat, that's likely the cause. You can press it down with your hand to confirm — if the running stops, that's your answer. We'll get someone out to fix it properly.",
+    email: "", phone: ""
+  },
+  {
+    id: "fixture-high-water-bill",
+    category: "Fixtures",
+    title: "Unexplained high water bill / Toilet dye test",
+    desc: "Customer received a massive water bill but sees no active leaks in the house.",
+    urgency: null,
+    urgencyLabel: null,
+    questions: [
+      "Is there any visible water damage, pooling water in the yard, or a running hose outside?",
+      "Can you hear water running anywhere when the house is totally quiet?",
+      "Do any of the toilets randomly refill themselves even when no one has flushed them?",
+    ],
+    script: "The number one cause of a suddenly high water bill is a silently leaking toilet flapper. Before we schedule a leak-detection visit, you can do a quick test at home: put a few drops of dark food coloring into the back tank of your toilets. Don't flush them. Wait 30 minutes, and look in the toilet bowls. If the water in the bowl has turned color, that toilet is leaking water straight down the drain. We can easily send a tech to replace the toilet guts, which is much cheaper than a full leak search!",
     email: "", phone: ""
   },
   {
@@ -2763,6 +2794,9 @@ const FAQ = [
     'maintenance': 'routine maintenance annual tune up',
     'generac': 'generator standby maintenance',
     'tank set': 'propane tank installation',
+    'p trap': 'sewer smell drain ptrap',
+    'sewer smell': 'sewer smell drain ptrap',
+    'water bill': 'high water bill toilet leak',
   };
 
   function normalizeSearchText(text) {
