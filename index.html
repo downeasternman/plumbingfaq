@@ -507,7 +507,7 @@
 
 <!-- ─── FOOTER ───────────────────────────────────────────────────────────── -->
 <footer class="site-footer">
-  <span>R. H. Foster Energy</span> &mdash; Internal CSR Reference &mdash; General Service FAQ v0.5 &mdash; Last reviewed June 2026 &mdash; Not for customer distribution
+  <span>R. H. Foster Energy</span> &mdash; Internal CSR Reference &mdash; General Service FAQ v0.6 &mdash; Last reviewed June 2026 &mdash; Not for customer distribution
 </footer>
 
 <!-- ═══════════════════════════════════════════════════════════════════════ -->
@@ -2291,18 +2291,33 @@ const FAQ = [
     title: "Burning odor from vents",
     desc: "Smell of burning dust, melting plastic, or electrical burning when furnace runs.",
     urgency: "emergency",
-    urgencyLabel: "Emergency — shut off if electrical or plastic smell",
-    stopCondition: "Shut off furnace if smell is electrical or plastic",
-    stopUntil: "If the smell is like hot plastic or electrical burning, stay on the line until the customer confirms the furnace is off at the thermostat or emergency shutoff.",
+    urgencyLabel: "Emergency — evacuate if active smoke or electrical fire smell",
+    stopCondition: "Do not proceed if smoke or electrical smell is present",
+    stopUntil: "Stay on the line until the customer confirms the furnace is turned off. If active smoke or a strong electrical/melting smell is present, confirm occupants are outside and 911 is called.",
     questions: [
-      "What does the smell resemble — dusty/burning dust, hot plastic, or electrical burning?",
-      "Did this start on the first furnace run of the season, or suddenly during normal use?",
-      "Is there any visible smoke coming from vents?",
-      "Are any carbon monoxide detectors going off?",
-      "What fuel type — oil, natural gas, or propane?",
-      "Has anything been stored near the furnace recently (plastic, chemicals, laundry)?",
+      "Is this the very first time you've turned the heat on this season?",
+      "Does it smell like burning dust, or does it smell like melting plastic/electrical wire?",
+      "Is there any visible smoke coming out of the vents or from the unit itself?",
+      "Are any smoke or carbon monoxide alarms going off?",
+      "Have you turned the system off at the thermostat?",
     ],
-    script: "If any carbon monoxide detectors are going off, get everyone out of the house and call 911. A light dusty smell on the first run of the season is often just dust burning off the heat exchanger and usually clears within an hour. But if the smell is like hot plastic, rubber, or electrical burning, turn the furnace off immediately at the thermostat or the emergency shutoff switch and do not run it again until a technician inspects it. Open a window for ventilation if needed. We're flagging this as a priority.",
+    script: "If this is the first time you are turning the heat on for the winter, a slight 'burning dust' smell is completely normal and should go away after 15 to 30 minutes. However, if it smells like melting plastic or burning electrical wires, or if you see any smoke, turn the system OFF immediately at the thermostat and the breaker. If alarms are going off or you suspect a fire, evacuate the house and call 911. We will hold off on service until the home is safe.",
+    email: "", phone: ""
+  },
+  {
+    id: "furnace-loud-noises",
+    category: "Furnaces & Forced Air",
+    title: "Loud banging, squealing, or scraping noises",
+    desc: "Furnace or ductwork is making highly unusual mechanical noises.",
+    urgency: null,
+    urgencyLabel: null,
+    questions: [
+      "What kind of noise is it? (High-pitched squeal, metal scraping, loud boom on startup, or just ductwork 'popping'?)",
+      "Does the noise happen the entire time it runs, only when it starts, or only when it shuts off?",
+      "If it's a loud 'boom' on startup, what fuel type is it? (Oil/Gas)",
+      "Is the house actually getting up to the temperature set on the thermostat?",
+    ],
+    script: "If you hear a loud 'boom' right when the furnace tries to ignite, turn the system off—that is a delayed ignition and needs a technician's adjustment before it damages the unit. If it's a high-pitched squeal or a metal-on-metal scraping sound, that's usually a failing blower motor or fan belt. It's best to leave the system off if the noise is severe so it doesn't cause further damage to the fan. We'll get this scheduled for a tech to investigate.",
     email: "", phone: ""
   },
 
