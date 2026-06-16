@@ -507,7 +507,7 @@
 
 <!-- ─── FOOTER ───────────────────────────────────────────────────────────── -->
 <footer class="site-footer">
-  <span>R. H. Foster Energy</span> &mdash; Internal CSR Reference &mdash; General Service FAQ v0.11 &mdash; Last reviewed June 2026 &mdash; Not for customer distribution
+  <span>R. H. Foster Energy</span> &mdash; Internal CSR Reference &mdash; General Service FAQ v0.12 &mdash; Last reviewed June 2026 &mdash; Not for customer distribution
 </footer>
 
 <!-- ═══════════════════════════════════════════════════════════════════════ -->
@@ -2583,6 +2583,92 @@ const FAQ = [
     email: "", phone: ""
   },
 
+  // ── ROUTINE MAINTENANCE ────────────────────────────────────────────────
+  {
+    id: "maint-boiler-furnace",
+    category: "Routine Maintenance",
+    title: "Annual boiler or furnace tune-up",
+    desc: "Routine cleaning, filter change, and efficiency check for heating systems.",
+    urgency: null,
+    urgencyLabel: null,
+    questions: [
+      "Is the system currently working normally, or are you having an issue with it?",
+      "What fuel type — oil, natural gas, or propane?",
+      "When was the equipment last serviced?",
+      "Is this a boiler (hot water baseboards/radiators) or a furnace (hot air vents)?",
+      "Is the customer currently on a service plan or contract?",
+    ],
+    script: "Routine maintenance is the best way to prevent unexpected breakdowns during a Maine winter. Just to confirm, the system is currently heating your home fine, correct? (If they say no, switch this to a repair/diagnostic call). I will get this request over to our scheduling team, and they will reach out to book a day for your annual tune-up.",
+    email: "", phone: ""
+  },
+  {
+    id: "maint-heat-pump",
+    category: "Routine Maintenance",
+    title: "Heat pump / mini-split deep cleaning",
+    desc: "Chemical wash of indoor head coils, blower wheel, and outdoor condenser.",
+    urgency: null,
+    urgencyLabel: null,
+    questions: [
+      "Are all the indoor and outdoor units currently running properly?",
+      "How many indoor heads do you have?",
+      "Are you experiencing any musty or 'dirty sock' smells from the units?",
+      "When was the last time the units were professionally deep-cleaned?",
+      "Are the outdoor units easily accessible (not on a high roof or buried in snow)?",
+    ],
+    script: "Over time, the blower wheels and coils inside heat pumps build up dust and sometimes mold, which lowers efficiency and can cause odors. A professional deep clean involves a bib-kit and chemical wash to clear that out. Since this is a maintenance visit, I just want to verify the system is heating and cooling normally right now. I'll get this request submitted and the team will call to schedule.",
+    email: "", phone: ""
+  },
+  {
+    id: "maint-central-ac",
+    category: "Routine Maintenance",
+    title: "Central A/C spring tune-up",
+    desc: "Annual cooling inspection, coil cleaning, and electrical check.",
+    urgency: null,
+    urgencyLabel: null,
+    questions: [
+      "Is the system currently working normally?",
+      "How old is the air conditioning system, roughly?",
+      "When was the indoor air filter last changed?",
+      "Is the outdoor unit easily accessible and clear of heavy debris/leaves?",
+    ],
+    script: "Getting your A/C tuned up in the spring before the heavy summer heat hits is a great idea. The tech will check the refrigerant levels, wash the outdoor coils, and test the electrical components. I will pass this request to the scheduling team and someone will be in touch to get you on the board.",
+    email: "", phone: ""
+  },
+  {
+    id: "maint-water-heater",
+    category: "Routine Maintenance",
+    title: "Water heater flush & inspection",
+    desc: "Preventative tank flush to remove sediment, or routine tankless descaling.",
+    urgency: null,
+    urgencyLabel: null,
+    questions: [
+      "Is this a standard tank water heater or an on-demand tankless unit?",
+      "Are you currently getting enough hot water, or is there a problem?",
+      "If a tank: are you hearing loud popping or rumbling noises from it? (Indicates heavy sediment)",
+      "If tankless: when was the last time it was chemically descaled?",
+      "Is the unit electric, gas, or propane?",
+    ],
+    script: "For tank water heaters, an annual flush removes the sediment that builds up at the bottom, which extends the life of the tank. For tankless units, a chemical flush removes hard water scale that can choke the heat exchanger. I'll send this over to the plumbing dispatch team to get your maintenance visit scheduled.",
+    email: "", phone: ""
+  },
+  {
+    id: "maint-generator",
+    category: "Routine Maintenance",
+    title: "Standby generator annual service",
+    desc: "Oil change, filter replacement, and battery check for whole-home generators.",
+    urgency: null,
+    urgencyLabel: null,
+    questions: [
+      "What brand is the generator? (Generac, Kohler, Cummins, etc.)",
+      "What fuel does it run on — propane or natural gas?",
+      "Is propane delivered by R. H. Foster?",
+      "Is the generator currently running its weekly test cycles normally?",
+      "Is there an active error light (like a red or yellow light) on the side of the unit right now?",
+    ],
+    script: "Annual service on a standby generator usually includes changing the oil, spark plugs, and air filter, as well as checking the battery health to make sure it's ready for the next power outage. If you see a solid red light on the unit, let me know, as that means it's currently locked out and might need a repair rather than just maintenance. I'll get this request to the team to schedule.",
+    email: "", phone: ""
+  },
+
   // ── SEPTIC (remaining) ─────────────────────────────────────────────────
   {
     id: "septic-drain-field",
@@ -2655,6 +2741,10 @@ const FAQ = [
     'musty': 'odor smell duct vent',
     'fuel oil': 'oil leak odor heating',
     'oil smell': 'oil leak odor heating',
+    'tune up': 'maintenance annual service',
+    'tuneup': 'maintenance annual service',
+    'maintenance': 'routine maintenance annual tune up',
+    'generac': 'generator standby maintenance',
   };
 
   function normalizeSearchText(text) {

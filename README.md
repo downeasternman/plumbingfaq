@@ -12,7 +12,7 @@ Published via GitHub Pages: https://downeasternman.github.io/plumbingfaq/
 
 ## What it does
 
-- Searchable, filterable list of common plumbing, heating, cooling, ductwork, fuel, heat pump, furnace, and thermostat call scenarios
+- Searchable, filterable list of common plumbing, heating, cooling, ductwork, fuel, heat pump, furnace, thermostat, and routine maintenance call scenarios
 - Each entry shows **Questions to Ask** and **What to Tell the Customer**
 - Urgency flags and high-visibility **STOP** banners for life-safety situations
 - Live search with typo/synonym handling (e.g. `fawcet` → `faucet`, `lp` → `propane`)
