@@ -507,7 +507,7 @@
 
 <!-- ─── FOOTER ───────────────────────────────────────────────────────────── -->
 <footer class="site-footer">
-  <span>R. H. Foster Energy</span> &mdash; Internal CSR Reference &mdash; General Service FAQ v0.8 &mdash; Last reviewed June 2026 &mdash; Not for customer distribution
+  <span>R. H. Foster Energy</span> &mdash; Internal CSR Reference &mdash; General Service FAQ v0.9 &mdash; Last reviewed June 2026 &mdash; Not for customer distribution
 </footer>
 
 <!-- ═══════════════════════════════════════════════════════════════════════ -->
@@ -567,6 +567,25 @@ const FAQ = [
       "Can the customer safely turn off the cold water supply to the unit? (Usually a valve above or near the tank.)",
     ],
     script: "While you wait for our tech, if the leak is significant, please turn off the cold water supply valve to the water heater — it's usually a handle or knob on the pipe going into the top of the tank. If you're not comfortable doing that, that's completely fine, just leave it. Do not turn off your main water unless the leak is uncontrolled. Keep the area around the heater clear. Our team will call you shortly.",
+    email: "", phone: ""
+  },
+  {
+    id: "wh-too-hot",
+    category: "Water Heater",
+    title: "Hot water is too hot / scalding",
+    desc: "Water coming from the tap is dangerously hot or steaming.",
+    urgency: "urgent",
+    urgencyLabel: "Urgent — scalding risk",
+    stopCondition: "Instruct customer to stop using hot water",
+    stopUntil: "Stay on the line until the customer confirms no one (especially children or elderly) is using the hot water.",
+    questions: [
+      "How hot is the water — is it steaming or sputtering out of the tap?",
+      "Is this happening at all faucets, or just one specific shower or sink?",
+      "Has anyone adjusted the temperature dial on the water heater or mixing valve recently?",
+      "Is the water heater electric, gas, propane, or oil-fired?",
+      "If it's a tank unit, is it making any loud boiling and rumbling noises?",
+    ],
+    script: "Dangerously hot water is a serious scalding risk, so please ensure no one uses the hot water—especially children—until this is resolved. If you feel comfortable doing so, you can look at the thermostat dial on the water heater to see if it was accidentally bumped up; it should generally be set to 120 degrees or 'Warm'. If it's already set correctly, or if you aren't comfortable checking, do not touch it. The issue could be a failed internal thermostat or a bad mixing valve. We will treat this as a priority and get a technician dispatched.",
     email: "", phone: ""
   },
 
@@ -2521,6 +2540,7 @@ const FAQ = [
     'showerhead': 'shower head',
     'hot water tank': 'water heater',
     'hwt': 'water heater',
+    'scalding': 'hot water scalding too hot',
     'lp': 'propane',
     'lp gas': 'propane',
     'furnace': 'furnace forced air heating',
