@@ -507,7 +507,7 @@
 
 <!-- ─── FOOTER ───────────────────────────────────────────────────────────── -->
 <footer class="site-footer">
-  <span>R. H. Foster Energy</span> &mdash; Internal CSR Reference &mdash; General Service FAQ v0.14 &mdash; Last reviewed June 2026 &mdash; Not for customer distribution
+  <span>R. H. Foster Energy</span> &mdash; Internal CSR Reference &mdash; General Service FAQ v0.15 &mdash; Last reviewed June 2026 &mdash; Not for customer distribution
 </footer>
 
 <!-- ═══════════════════════════════════════════════════════════════════════ -->
@@ -1662,6 +1662,22 @@ const FAQ = [
     script: "If sewage is actively coming up through the floor drain, stop using water in the house immediately — every flush and every sink use pushes more up. The floor drain and lowest fixtures are the first place you'll see a main line or septic backup. If the home is on a septic system, a full tank is often the cause — and pumping is something a local septic company handles, not us. Search 'septic pumping' plus their town to find a provider. If the system was recently pumped or the home is on town sewer, our team will diagnose the main line.",
     email: "", phone: ""
   },
+  {
+    id: "sump-battery-beeping",
+    category: "Basement & Sump",
+    title: "Sump pump alarm beeping",
+    desc: "A continuous beep or alarm coming from the sump pump battery backup box.",
+    urgency: null,
+    urgencyLabel: null,
+    questions: [
+      "Is the basement currently flooding, or is it just the box making a noise?",
+      "Is the primary sump pump still working and ejecting water?",
+      "Is there a text display on the box, or just lights? (e.g., 'Replace Battery')",
+      "How old is the backup battery?",
+    ],
+    script: "If the basement is dry and the main pump is working, that beeping usually just means the 12-volt backup battery has reached the end of its lifespan and can no longer hold a charge. There is usually a 'silence' button on the front of the control box you can press to stop the noise for 24 hours. We can get a technician scheduled during normal business hours to bring out a replacement battery and test the system.",
+    email: "", phone: ""
+  },
 
   // ── GAS & PROPANE ──────────────────────────────────────────────────────
   {
@@ -2108,6 +2124,22 @@ const FAQ = [
       "When did the problem start?",
     ],
     script: "Do not keep running equipment with a blocked or suspected blocked vent — carbon monoxide can back up into the house. If any CO detectors are going off, evacuate immediately and call 911. If the vent is safely reachable from outside, they can clear snow away from the outlet — but do not climb on the roof. We'll get a tech out to inspect.",
+    email: "", phone: ""
+  },
+  {
+    id: "gas-fireplace-soot",
+    category: "Gas & Propane",
+    title: "Gas fireplace soot or won't light",
+    desc: "Propane/gas fireplace won't turn on with the switch/remote, or the glass is turning black.",
+    urgency: null,
+    urgencyLabel: null,
+    questions: [
+      "Is the fireplace failing to turn on, or is the issue with black soot on the glass/logs?",
+      "If it won't turn on, have you replaced the batteries in both the remote AND the receiver box under the fireplace?",
+      "If the glass is black with soot, is the fireplace currently running?",
+      "Do you smell raw gas in the room right now?",
+    ],
+    script: "If you smell raw gas, please leave the house and call 911. If the fireplace just won't turn on with the remote, the most common fix is replacing the batteries—not just in the hand-held remote, but also in the little black receiver box tucked underneath the fireplace grate. If the glass is turning completely black with soot, please do not use the fireplace. That indicates a venting or fuel-mixture issue that needs to be cleaned and adjusted by a technician to prevent carbon monoxide buildup. I'll get someone scheduled.",
     email: "", phone: ""
   },
   {
@@ -2797,6 +2829,8 @@ const FAQ = [
     'p trap': 'sewer smell drain ptrap',
     'sewer smell': 'sewer smell drain ptrap',
     'water bill': 'high water bill toilet leak',
+    'sump alarm': 'sump pump battery beeping backup',
+    'fireplace': 'gas fireplace propane soot',
   };
 
   function normalizeSearchText(text) {
