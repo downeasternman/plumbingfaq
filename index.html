@@ -507,7 +507,7 @@
 
 <!-- ─── FOOTER ───────────────────────────────────────────────────────────── -->
 <footer class="site-footer">
-  <span>R. H. Foster Energy</span> &mdash; Internal CSR Reference &mdash; General Service FAQ v0.7 &mdash; Last reviewed June 2026 &mdash; Not for customer distribution
+  <span>R. H. Foster Energy</span> &mdash; Internal CSR Reference &mdash; General Service FAQ v0.8 &mdash; Last reviewed June 2026 &mdash; Not for customer distribution
 </footer>
 
 <!-- ═══════════════════════════════════════════════════════════════════════ -->
@@ -2390,6 +2390,92 @@ const FAQ = [
     email: "", phone: ""
   },
 
+  // ── CENTRAL AIR CONDITIONING ───────────────────────────────────────────
+  {
+    id: "ac-freezing-up",
+    category: "Central A/C",
+    title: "A/C freezing up (ice on pipes or coil)",
+    desc: "Visible ice on the outdoor copper pipes or indoor unit, accompanied by weak airflow.",
+    urgency: "urgent",
+    urgencyLabel: "Urgent — turn off to thaw",
+    stopCondition: "Instruct customer to turn A/C OFF and Fan ON",
+    stopUntil: "Stay on the line until the customer confirms the cooling is turned off at the thermostat, but the fan is switched to 'ON'.",
+    questions: [
+      "Is there visible white ice on the thicker copper pipe going into the outdoor unit?",
+      "Is the air coming out of the indoor vents very weak or non-existent?",
+      "When was the indoor air filter last changed? (A severely clogged filter causes freezing)",
+      "Is water dripping heavily around the indoor unit?",
+    ],
+    script: "When an A/C system freezes up, our technician physically cannot work on it or test the refrigerant levels until the ice is completely melted—which can take several hours. To save you a second service fee, please go to your thermostat right now: turn the system to 'OFF' (or turn Cooling off) and turn the Fan setting from 'Auto' to 'ON'. This will blow warm house air over the indoor coil to melt the ice before we arrive. Check your air filter, too—if it's completely blocked, that's often the culprit.",
+    email: "", phone: ""
+  },
+  {
+    id: "ac-blowing-warm",
+    category: "Central A/C",
+    title: "A/C running but blowing warm air",
+    desc: "The indoor fan is blowing, but the air is not cool and the house is heating up.",
+    urgency: null,
+    urgencyLabel: null,
+    questions: [
+      "Is the indoor thermostat set to COOL and the temperature set below the current room temp?",
+      "Go look at the outdoor unit: Is the fan blade on top actually spinning?",
+      "Is the outdoor unit making a loud buzzing or humming noise without spinning?",
+      "When was the indoor air filter last replaced?",
+      "Are the outdoor coils covered in pollen, grass clippings, or cottonwood?",
+    ],
+    script: "If the indoor fan is blowing but the air isn't cold, the issue is usually with the outdoor unit. If you go outside and hear the unit loudly buzzing or humming but the fan blade isn't spinning, please turn the system completely OFF at the thermostat. Leaving it buzzing like that can overheat and ruin the compressor. This is often just a failed start-capacitor, which is a quick fix for our tech. I will get someone scheduled for you.",
+    email: "", phone: ""
+  },
+  {
+    id: "ac-indoor-leak",
+    category: "Central A/C",
+    title: "Water leaking from indoor A/C unit",
+    desc: "Water is overflowing from the indoor air handler, dripping from the ceiling, or soaking the floor.",
+    urgency: "urgent",
+    urgencyLabel: "Urgent — water damage risk",
+    questions: [
+      "Where is the indoor unit located? (Attic, basement, or hall closet?)",
+      "Is water actively dripping through a ceiling or damaging finished floors?",
+      "Is the drain pan visibly overflowing?",
+      "Has the system been freezing up recently?",
+      "Do they know where the condensate drain pipe exits the house?",
+    ],
+    script: "Please turn the A/C system completely OFF at the thermostat. Air conditioners pull a lot of humidity out of the air, and if the drain line gets clogged with algae or dust, that water overflows quickly. Turning the system off stops the condensation from forming. Put buckets or towels down to catch the active drip. We treat potential water damage as a priority, so I am getting a technician dispatched to clear the drain line.",
+    email: "", phone: ""
+  },
+  {
+    id: "ac-dead-no-power",
+    category: "Central A/C",
+    title: "A/C completely dead (won't turn on at all)",
+    desc: "Thermostat is calling for cooling, but neither the indoor nor outdoor units are turning on.",
+    urgency: null,
+    urgencyLabel: null,
+    questions: [
+      "Is the thermostat screen blank, or does it have power?",
+      "Have they checked the main circuit breaker panel for a tripped A/C or Furnace breaker?",
+      "Is there an emergency switch (looks like a light switch) near the indoor unit that got bumped?",
+      "Did the home recently experience a thunderstorm or power surge?",
+    ],
+    script: "Before we roll a truck, please double-check your main electrical panel to see if the breaker for the A/C or the air handler has tripped. Also, check if there is a normal-looking light switch near the indoor unit—that's a service switch, and if someone accidentally bumped it, the whole system loses power. If the power checks out and it's still completely dead, we will get a technician out to trace the electrical issue.",
+    email: "", phone: ""
+  },
+  {
+    id: "ac-outdoor-loud-noise",
+    category: "Central A/C",
+    title: "Outdoor unit making loud or unusual noises",
+    desc: "The condenser outside is screeching, clanking, or vibrating heavily.",
+    urgency: null,
+    urgencyLabel: null,
+    questions: [
+      "What kind of noise is it? (High-pitched screech, metal clanking, or heavy vibration?)",
+      "Is the fan blade visibly hitting something like a stick or wire?",
+      "Is the unit still actually cooling the house despite the noise?",
+      "How old is the system, roughly?",
+    ],
+    script: "If the noise is a harsh metal-on-metal clanking or a loud screeching sound, it is safest to turn the system OFF at the thermostat. Running it with a failing fan motor or compressor can turn a smaller repair into a full system replacement. If there's just a stick stuck in the top grate, you can carefully remove it once the unit stops, but otherwise, leave it off and we will get a tech out to inspect it.",
+    email: "", phone: ""
+  },
+
   // ── SEPTIC (remaining) ─────────────────────────────────────────────────
   {
     id: "septic-drain-field",
@@ -2453,6 +2539,9 @@ const FAQ = [
     'thermostat': 'thermostat control nest ecobee',
     'nest': 'thermostat nest smart',
     'ecobee': 'thermostat ecobee smart',
+    'ac': 'central air conditioning',
+    'air conditioner': 'central air conditioning ac',
+    'condenser': 'central air conditioning outdoor unit',
   };
 
   function normalizeSearchText(text) {
