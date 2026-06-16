@@ -507,7 +507,7 @@
 
 <!-- ─── FOOTER ───────────────────────────────────────────────────────────── -->
 <footer class="site-footer">
-  <span>R. H. Foster Energy</span> &mdash; Internal CSR Reference &mdash; General Service FAQ v0.12 &mdash; Last reviewed June 2026 &mdash; Not for customer distribution
+  <span>R. H. Foster Energy</span> &mdash; Internal CSR Reference &mdash; General Service FAQ v0.13 &mdash; Last reviewed June 2026 &mdash; Not for customer distribution
 </footer>
 
 <!-- ═══════════════════════════════════════════════════════════════════════ -->
@@ -2119,6 +2119,23 @@ const FAQ = [
     script: "If they smell gas, get everyone out of the house immediately — do not use phones, switches, or vehicles near the leak area. Call 911 once safely outside. If there's no odor but the line is visibly damaged, keep everyone away from the area and do not start any engines or equipment nearby. We'll coordinate emergency service.",
     email: "", phone: ""
   },
+  {
+    id: "propane-tank-set",
+    category: "Gas & Propane",
+    title: "New propane tank installation (Tank Set)",
+    desc: "Customer wants a new propane tank installed or is switching providers.",
+    urgency: null,
+    urgencyLabel: null,
+    questions: [
+      "Are you a new customer, or are you switching from another propane provider?",
+      "If switching: do you own your current tank, or is it leased from the other company?",
+      "What appliances will run on propane? (Helps determine what size tank is needed)",
+      "Is the gas line already installed to the house, or will that need to be run?",
+      "What is your target timeline for getting the tank set?",
+    ],
+    script: "The great news is that R. H. Foster provides the tank and standard installation at absolutely no cost to you. We also waive the annual tank rental fee completely as long as you use at least one tank's worth of propane per year. I will get your information over to our propane team, and someone will call you to discuss tank sizing and schedule a site visit.",
+    email: "", phone: ""
+  },
 
   // ── BOILER & HEATING (remaining) ───────────────────────────────────────
   {
@@ -2745,6 +2762,7 @@ const FAQ = [
     'tuneup': 'maintenance annual service',
     'maintenance': 'routine maintenance annual tune up',
     'generac': 'generator standby maintenance',
+    'tank set': 'propane tank installation',
   };
 
   function normalizeSearchText(text) {
