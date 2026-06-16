@@ -507,7 +507,7 @@
 
 <!-- ─── FOOTER ───────────────────────────────────────────────────────────── -->
 <footer class="site-footer">
-  <span>R. H. Foster Energy</span> &mdash; Internal CSR Reference &mdash; General Service FAQ v0.6 &mdash; Last reviewed June 2026 &mdash; Not for customer distribution
+  <span>R. H. Foster Energy</span> &mdash; Internal CSR Reference &mdash; General Service FAQ v0.7 &mdash; Last reviewed June 2026 &mdash; Not for customer distribution
 </footer>
 
 <!-- ═══════════════════════════════════════════════════════════════════════ -->
@@ -2321,6 +2321,75 @@ const FAQ = [
     email: "", phone: ""
   },
 
+  // ── THERMOSTATS & CONTROLS ─────────────────────────────────────────────
+  {
+    id: "thermostat-blank-screen",
+    category: "Thermostats & Controls",
+    title: "Blank thermostat screen / completely dead",
+    desc: "The thermostat display is blank and unresponsive to touch or buttons.",
+    urgency: "urgent",
+    urgencyLabel: "Urgent — no heat in cold weather",
+    questions: [
+      "Does the thermostat take AA or AAA batteries? (Can the faceplate be pulled off?)",
+      "If it takes batteries, have they been replaced with brand new ones?",
+      "Is the emergency shutoff switch for the heating system accidentally turned off?",
+      "Has the main circuit breaker been checked?",
+      "Did the screen go blank suddenly, or fade over time?",
+    ],
+    script: "If your thermostat takes batteries, try pulling the faceplate off the wall and putting in a fresh set first—dead batteries are the most common cause of a blank screen. If it doesn't take batteries, or fresh ones don't work, check that the emergency switch for your heating system (usually a red switch nearby) hasn't been bumped off, and check your circuit breaker. If the power to the furnace is interrupted, the thermostat loses power too. If those are all fine, we'll get a technician scheduled to fix it.",
+    email: "", phone: ""
+  },
+  {
+    id: "thermostat-not-reaching-temp",
+    category: "Thermostats & Controls",
+    title: "System not reaching the set temperature",
+    desc: "Thermostat is set to a specific temperature, but the house stays colder than the setting.",
+    urgency: null,
+    urgencyLabel: null,
+    questions: [
+      "Is the heating system running constantly but just not keeping up, or is it shutting off too early?",
+      "Is the thermostat located in direct sunlight, near a fireplace, or near a drafty door?",
+      "Is the air coming out of the vents warm, or just room temperature?",
+      "What is the thermostat currently set to, and what does it say the actual room temperature is?",
+      "When was the air filter last changed?",
+    ],
+    script: "If the system is shutting off before it reaches the set temperature, there might be an airflow or sensor issue. Please check your air filter—a clogged filter often causes the system to overheat and shut down early to protect itself. If the filter is clean, or if the system is running constantly but blowing cool air, leave the system on and we will get a tech out to diagnose the equipment.",
+    email: "", phone: ""
+  },
+  {
+    id: "thermostat-wifi-offline",
+    category: "Thermostats & Controls",
+    title: "Smart thermostat offline or app not working",
+    desc: "Nest, Ecobee, or Honeywell thermostat is disconnected from Wi-Fi or the mobile app.",
+    urgency: null,
+    urgencyLabel: null,
+    questions: [
+      "Is the physical thermostat on the wall still working to control the heat?",
+      "Did the home recently lose power or get a new internet router/provider?",
+      "Has the internet router been restarted?",
+      "Is the thermostat displaying an error message on the wall screen?",
+      "Are other Wi-Fi devices in the home working?",
+    ],
+    script: "If the thermostat on the wall is still manually controlling your heat, your heating system is working safely and this is just a networking issue. Try unplugging your internet router for 30 seconds and plugging it back in. Most smart thermostats will automatically reconnect to the app once the Wi-Fi resets. If the wall unit itself is completely dead or not controlling the heat, that requires an HVAC technician, and we can get that scheduled for you.",
+    email: "", phone: ""
+  },
+  {
+    id: "thermostat-short-cycling",
+    category: "Thermostats & Controls",
+    title: "Thermostat clicking on and off rapidly",
+    desc: "Thermostat clicks audibly and rapidly turns the heating equipment on and off.",
+    urgency: null,
+    urgencyLabel: null,
+    questions: [
+      "Is the equipment actually firing up, or is it just the thermostat clicking?",
+      "Is this an older digital thermostat or a smart thermostat (Nest/Ecobee)?",
+      "If it's a smart thermostat, does it say 'Delayed' or show a countdown timer on the screen?",
+      "Has there been a recent power outage or surge?",
+    ],
+    script: "A rapid clicking sound from the thermostat usually points to a failing internal relay or a low-voltage wiring issue from the furnace. To protect your heating equipment from being damaged by turning on and off too fast, please turn the thermostat completely OFF or to a setting far below room temperature. We will get an HVAC technician out to inspect the wiring and likely replace the thermostat faceplate.",
+    email: "", phone: ""
+  },
+
   // ── SEPTIC (remaining) ─────────────────────────────────────────────────
   {
     id: "septic-drain-field",
@@ -2381,6 +2450,9 @@ const FAQ = [
     'mitsubishi': 'heat pump mitsubishi',
     'fujitsu': 'heat pump fujitsu',
     'defrost': 'heat pump defrost',
+    'thermostat': 'thermostat control nest ecobee',
+    'nest': 'thermostat nest smart',
+    'ecobee': 'thermostat ecobee smart',
   };
 
   function normalizeSearchText(text) {
