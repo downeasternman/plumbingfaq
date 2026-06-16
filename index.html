@@ -393,6 +393,63 @@
     border-radius: 2px;
     padding: 0 1px;
   }
+
+  /* ─── STOP CONDITION BANNER ─────────────────────────────────────────── */
+  .stop-banner {
+    grid-column: 1 / -1;
+    background: #fff0f1;
+    border: 2px solid #b00020;
+    border-radius: var(--radius);
+    padding: 12px 14px;
+    margin-bottom: 4px;
+  }
+  .stop-banner-title {
+    font-size: 13px;
+    font-weight: 800;
+    color: #b00020;
+    letter-spacing: 0.3px;
+    line-height: 1.35;
+  }
+  .stop-banner-until {
+    font-size: 12.5px;
+    color: var(--ink);
+    margin-top: 5px;
+    line-height: 1.45;
+  }
+
+  /* ─── PRINT ───────────────────────────────────────────────────────────── */
+  @media print {
+    .search-wrap,
+    .pills,
+    .results-meta,
+    .search-clear,
+    .faq-chevron { display: none !important; }
+    .site-header {
+      position: static;
+      box-shadow: none;
+    }
+    body {
+      background: #fff;
+      font-size: 12px;
+    }
+    .main { padding: 12px 0 24px; }
+    .faq-item {
+      break-inside: avoid;
+      border: 1px solid #ccc;
+      margin-bottom: 8px;
+      box-shadow: none;
+    }
+    .faq-item.hidden { display: block !important; }
+    .faq-body {
+      max-height: none !important;
+      overflow: visible !important;
+    }
+    .faq-trigger { pointer-events: none; }
+    .faq-item.open .faq-trigger,
+    .faq-trigger:hover { background: transparent; }
+    mark { background: none; padding: 0; }
+    .site-footer { border-top: 1px solid #ccc; }
+  }
 </style>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -451,7 +508,7 @@
 
 <!-- ─── FOOTER ───────────────────────────────────────────────────────────── -->
 <footer class="site-footer">
-  <span>R. H. Foster Energy</span> &mdash; Internal CSR Reference &mdash; Plumbing FAQ v0.1 DRAFT &mdash; Not for customer distribution
+  <span>R. H. Foster Energy</span> &mdash; Internal CSR Reference &mdash; Plumbing FAQ v0.2 &mdash; Last reviewed June 2026 &mdash; Not for customer distribution
 </footer>
 
 <!-- ═══════════════════════════════════════════════════════════════════════ -->
@@ -463,6 +520,8 @@
 <!--    desc:      one-line description (shown collapsed)                    -->
 <!--    urgency:   null | "urgent" | "emergency"                             -->
 <!--    urgencyLabel: text shown in flag (if urgency set)                    -->
+<!--    stopCondition: optional — imperative STOP banner text (life-safety)  -->
+<!--    stopUntil: optional — what CSR must confirm before proceeding         -->
 <!--    questions: array of strings — what to ask the customer               -->
 <!--    script:    string — what to tell the customer while they wait        -->
 <!--    -- PHASE 2 fields (not rendered yet, fill in when ready) --          -->
@@ -486,10 +545,11 @@ const FAQ = [
       "Is it a tank unit or tankless?",
       "Any error lights or codes on the unit?",
       "Has the circuit breaker been checked (electric) or pilot light verified (gas/propane)?",
+      "Are any carbon monoxide detectors going off right now?",
       "Is this a sudden loss or has it been getting worse over time?",
       "How many people in the household? (helps size replacement if needed)",
     ],
-    script: "I've got your request in. The plumbing team will call you back to schedule a visit. In the meantime, check that your circuit breaker hasn't tripped (for electric) or that your pilot light is lit (for gas or propane units). If you're comfortable doing so, you can also check that the temperature dial on the unit hasn't been accidentally turned down.",
+    script: "I've got your request in. The plumbing team will call you back to schedule a visit. If any carbon monoxide detectors are going off, leave the house right away, call 911, and do not re-enter until emergency responders clear it. In the meantime, check that your circuit breaker hasn't tripped (for electric) or that your pilot light is lit (for gas or propane units). If you're comfortable doing so, you can also check that the temperature dial on the unit hasn't been accidentally turned down.",
     email: "", phone: ""
   },
   {
@@ -519,6 +579,8 @@ const FAQ = [
     desc: "Pipe has burst, or water won't flow and freezing is suspected.",
     urgency: "emergency",
     urgencyLabel: "Emergency — shut off water immediately",
+    stopCondition: "Do not proceed until water is off",
+    stopUntil: "Stay on the line until the customer confirms the main water shutoff is closed or the active leak is fully stopped.",
     questions: [
       "Is there active water flowing or flooding right now?",
       "Do they know where the main water shutoff is?",
@@ -629,6 +691,8 @@ const FAQ = [
     desc: "Multiple drains backing up, sewage coming up in tub or floor drain.",
     urgency: "emergency",
     urgencyLabel: "Emergency — stop all water use",
+    stopCondition: "Do not proceed until all water use has stopped",
+    stopUntil: "Stay on the line until the customer confirms no toilets are being flushed, no sinks or laundry are running, and no fixtures are in use.",
     questions: [
       "Which drains are affected? (If more than one, this is likely the main line.)",
       "Is it the lowest fixtures backing up first — floor drain, tub, basement toilet?",
@@ -925,8 +989,51 @@ const FAQ = [
       "Is there an existing line nearby, or is this a new run?",
       "Is this for a gas range, dryer, generator, or something else?",
       "When does the customer need this completed?",
+      "Are there any active gas odors or carbon monoxide alarms in the home right now?",
     ],
-    script: "Gas line work ties together our delivery and plumbing teams. I'll make sure this gets to both so the right people can coordinate. Someone will call to schedule the assessment.",
+    script: "If they smell gas or a CO alarm is going off, stop and follow the gas odor or CO emergency guidance — do not continue with scheduling. Otherwise, gas line work ties together our delivery and plumbing teams. I'll make sure this gets to both so the right people can coordinate. Someone will call to schedule the assessment.",
+    email: "", phone: ""
+  },
+  {
+    id: "gas-odor-leak",
+    category: "Gas & Propane",
+    title: "Gas or propane odor — possible leak",
+    desc: "Smell of rotten eggs, sulfur, or gas near an appliance, tank, or line.",
+    urgency: "emergency",
+    urgencyLabel: "Emergency — evacuate and call 911",
+    stopCondition: "Do not proceed until everyone is outside",
+    stopUntil: "Stay on the line until the customer confirms all occupants have left the building, no flames or switches are being used inside, and they are at a safe distance.",
+    questions: [
+      "Where is the smell strongest — kitchen, basement, near the tank, or outside?",
+      "Is the odor strong right now or faint and intermittent?",
+      "Is the home on natural gas or propane?",
+      "Is propane delivered by R. H. Foster?",
+      "Are any appliances currently running?",
+      "Is anyone inside the home right now — including pets?",
+      "Are any carbon monoxide detectors also going off?",
+    ],
+    script: "Please leave the house right now — do not flip any light switches, do not use your phone inside, and do not try to find the leak yourself. Once you're safely outside and away from the building, call 911 and your gas or propane supplier's emergency line. We'll coordinate service after the scene is cleared. Do not re-enter until emergency responders say it is safe.",
+    email: "", phone: ""
+  },
+  {
+    id: "fuel-co-alarm",
+    category: "Gas & Propane",
+    title: "Carbon monoxide alarm with oil, gas, or propane equipment",
+    desc: "CO detector sounding with a running boiler, furnace, water heater, or other fuel-burning appliance.",
+    urgency: "emergency",
+    urgencyLabel: "Emergency — evacuate immediately",
+    stopCondition: "Do not proceed until everyone is outside",
+    stopUntil: "Stay on the line until the customer confirms all occupants are out of the building, fuel-burning equipment is shut down if safely possible from outside the living space, and 911 has been called.",
+    questions: [
+      "Is the CO alarm sounding right now or did it recently go off?",
+      "Is anyone feeling dizzy, nauseous, or having headaches?",
+      "What fuel-burning equipment is in the home — boiler, water heater, stove, fireplace?",
+      "What fuel type — oil, natural gas, or propane?",
+      "Is the equipment still running, or has it been shut off?",
+      "When were CO detectors last tested or replaced?",
+      "Is propane or oil delivered by R. H. Foster?",
+    ],
+    script: "Get everyone out of the house immediately — including pets. Do not try to reset the alarm or restart the equipment. Once you're safely outside, call 911. Carbon monoxide is odorless and can be deadly. Do not re-enter until emergency responders clear the home. We'll coordinate equipment inspection after the emergency is handled.",
     email: "", phone: ""
   },
 
@@ -1537,12 +1644,13 @@ const FAQ = [
       "What brand and model is the unit, if visible?",
       "Is there an error code on the display?",
       "Is the unit gas/propane or electric?",
+      "Are any carbon monoxide detectors going off right now?",
       "Is it producing no hot water at all, or is the temperature inconsistent?",
       "Has the unit been descaled or maintained in the last two years?",
       "Is the cold water inlet filter (on the unit) clean?",
       "Have multiple fixtures been tried, or just one?",
     ],
-    script: "Tankless units often display error codes that help diagnose the issue — if there's a code on the display, write it down for the tech. If the unit is gas or propane, verify the gas supply is on and pressure is normal. Hard water scaling is a common cause of performance issues in Maine; the unit may need a descaling flush. We'll get a tech out to diagnose.",
+    script: "If any carbon monoxide detectors are going off, leave the house right away, call 911, and do not re-enter until emergency responders clear it. Tankless units often display error codes that help diagnose the issue — if there's a code on the display, write it down for the tech. If the unit is gas or propane, verify the gas supply is on and pressure is normal. Hard water scaling is a common cause of performance issues in Maine; the unit may need a descaling flush. We'll get a tech out to diagnose.",
     email: "", phone: ""
   },
   {
@@ -1566,7 +1674,7 @@ const FAQ = [
   // ── OUTDOOR & SEASONAL (remaining) ────────────────────────────────────
   {
     id: "outdoor-radiant-install",
-    category: "Outdoor & Seasonal",
+    category: "Boiler & Heating",
     title: "Radiant floor heat — new installation",
     desc: "Installing in-floor hydronic or electric radiant heat in a new or existing space.",
     urgency: null,
@@ -1611,6 +1719,8 @@ const FAQ = [
     desc: "Braided supply line to toilet, sink, or appliance has burst or is spraying water.",
     urgency: "emergency",
     urgencyLabel: "Emergency — shut off water now",
+    stopCondition: "Do not proceed until water is off",
+    stopUntil: "Stay on the line until the customer confirms the fixture shutoff or main water shutoff is closed and the spray has stopped.",
     questions: [
       "Which fixture or appliance — toilet, sink, dishwasher, washing machine, water heater?",
       "Is it actively spraying or already shut off?",
@@ -1695,8 +1805,9 @@ const FAQ = [
       "Is it on a septic system or a park sewer hookup?",
       "Is the home skirted, and is the underbelly accessible?",
       "Has there been any freezing in the underbelly pipes?",
+      "Is heat tape plugged in and showing power (no tripped GFCI)?",
     ],
-    script: "Mobile and manufactured homes have their own plumbing conventions and sometimes different materials than site-built homes. Our team is familiar with these. I'll pass this along with the details you've given me and someone will call to confirm we can help and schedule a visit.",
+    script: "For mobile homes in cold weather, check whether heat tape under the unit is plugged in and has power — a tripped GFCI is a very common cause of frozen pipes and doesn't need a service call. Mobile and manufactured homes have their own plumbing conventions and sometimes different materials than site-built homes. Our team is familiar with these. I'll pass this along with the details you've given me and someone will call to confirm we can help and schedule a visit.",
     email: "", phone: ""
   },
 
@@ -1776,6 +1887,160 @@ const FAQ = [
     script: "Generator gas hookups involve our plumbing team for the gas line and need to coordinate with an electrician for the transfer switch. If propane is involved and you're an R. H. Foster fuel customer, that makes the coordination easier — let me note that. I'll pass this to both teams.",
     email: "", phone: ""
   },
+  {
+    id: "propane-regulator-ice",
+    category: "Gas & Propane",
+    title: "Propane regulator icing or freeze-up",
+    desc: "Low flame, weak heat, or appliance shutdown in very cold weather — regulator may be frosting over.",
+    urgency: "urgent",
+    urgencyLabel: "Urgent in freezing weather",
+    questions: [
+      "What is the outside temperature right now?",
+      "Is frost or ice visible on the outdoor regulator or tank?",
+      "Which appliances are affected — stove, boiler, water heater, or all of them?",
+      "When was the tank last filled?",
+      "Is the tank above or below 20% on the gauge?",
+      "Is propane delivered by R. H. Foster?",
+      "Are any carbon monoxide detectors going off?",
+    ],
+    script: "Do not pour hot water on the regulator or use an open flame to thaw it — that can damage the regulator and create a fire hazard. If appliances are running poorly, reduce demand by turning off non-essential equipment until a tech can inspect. If any CO detectors are going off, evacuate immediately and call 911. We'll get the team on this.",
+    email: "", phone: ""
+  },
+  {
+    id: "propane-empty-wont-ignite",
+    category: "Gas & Propane",
+    title: "Propane appliance won't ignite after tank ran empty",
+    desc: "Appliance won't light or stay running after the tank was refilled following a run-out.",
+    urgency: "urgent",
+    urgencyLabel: "Urgent — no heat or hot water",
+    questions: [
+      "Which appliance won't start — boiler, water heater, stove, dryer?",
+      "When was the tank refilled?",
+      "Is the tank gauge showing fuel now?",
+      "Has anyone tried to relight the pilot or reset the appliance?",
+      "Is there an error code or lockout light on the unit?",
+      "Are any carbon monoxide detectors going off?",
+      "Is propane delivered by R. H. Foster?",
+    ],
+    script: "After a propane run-out, air can get into the lines and the system usually needs to be purged and restarted by a qualified technician. Do not keep pressing reset buttons or repeatedly trying to light a pilot — if it fails more than once, stop. If any CO detectors are going off, leave the house and call 911. We'll get a tech scheduled.",
+    email: "", phone: ""
+  },
+  {
+    id: "oil-burner-lockout",
+    category: "Gas & Propane",
+    title: "Oil burner lockout or reset button",
+    desc: "Oil-fired boiler or furnace has locked out and won't restart.",
+    urgency: "urgent",
+    urgencyLabel: "Urgent — no heat in cold weather",
+    questions: [
+      "What equipment is affected — boiler, furnace, or water heater?",
+      "How many times has the reset button been pressed?",
+      "What does the oil tank gauge read?",
+      "Any unusual noises, smoke, or soot smell when it tried to run?",
+      "Is the outside exhaust vent blocked by snow or ice?",
+      "Are any carbon monoxide detectors going off?",
+      "How cold is it inside the house right now?",
+    ],
+    script: "If any CO detectors are going off, get everyone out of the house and call 911 — do not try to reset the burner. Otherwise, you can try the reset button once only. If it locks out again, leave it off and wait for the tech — repeated resets can flood the combustion chamber with oil. Check the tank gauge and whether the outside vent is blocked by snow. We're treating this as a priority.",
+    email: "", phone: ""
+  },
+  {
+    id: "oil-runout-airbound",
+    category: "Gas & Propane",
+    title: "Oil tank ran empty — burner won't fire after delivery",
+    desc: "System won't restart after an oil run-out, even after the tank has been filled.",
+    urgency: "urgent",
+    urgencyLabel: "Urgent — no heat or hot water",
+    questions: [
+      "When was the delivery completed?",
+      "What does the tank gauge read now?",
+      "Is the burner locked out or just not firing?",
+      "Has anyone tried to bleed the line or press reset?",
+      "Any soot smell or smoke when it attempted to start?",
+      "Are any carbon monoxide detectors going off?",
+      "Is oil delivered by R. H. Foster?",
+    ],
+    script: "After an oil run-out, the line often needs to be bled of air before the burner will fire safely — that's a job for a qualified technician, not something to keep trying at home. Do not repeatedly hit the reset button. If any CO detectors are going off, evacuate and call 911. We'll get a tech out as quickly as we can.",
+    email: "", phone: ""
+  },
+  {
+    id: "oil-soot-smoke",
+    category: "Gas & Propane",
+    title: "Soot odor or smoky startup from oil equipment",
+    desc: "Black smoke, soot smell, or puff-back when oil burner starts.",
+    urgency: "urgent",
+    urgencyLabel: "Urgent — combustion safety concern",
+    questions: [
+      "When did the soot or smoke start — just now or building over days?",
+      "Is smoke visible at the vent outside?",
+      "Is there soot around the boiler or furnace?",
+      "Is the equipment still running or has it shut off?",
+      "Are any carbon monoxide detectors going off?",
+      "When was the equipment last serviced?",
+      "Is oil delivered by R. H. Foster?",
+    ],
+    script: "Shut the equipment down if it hasn't already locked out — do not keep running a burner that's smoking or puffing soot. Open windows for ventilation if there's odor inside. If any CO detectors are going off, get everyone outside and call 911. This needs same-day attention from a technician. We're flagging this as a priority.",
+    email: "", phone: ""
+  },
+  {
+    id: "fuel-vent-blocked",
+    category: "Gas & Propane",
+    title: "Exhaust vent blocked — oil, gas, or propane equipment",
+    desc: "Appliance shuts down in wind or snow; vent pipe may be blocked by ice, snow, or debris.",
+    urgency: "urgent",
+    urgencyLabel: "Urgent — do not operate equipment",
+    questions: [
+      "What fuel type — oil, natural gas, or propane?",
+      "Which appliance is affected — boiler, furnace, water heater?",
+      "Is the vent outlet visible from outside? Can they see snow or ice on it?",
+      "Has the equipment locked out or is it still trying to run?",
+      "Any recent heavy snow, ice storm, or plowing near the vent?",
+      "Are any carbon monoxide detectors going off?",
+      "When did the problem start?",
+    ],
+    script: "Do not keep running equipment with a blocked or suspected blocked vent — carbon monoxide can back up into the house. If any CO detectors are going off, evacuate immediately and call 911. If the vent is safely reachable from outside, they can clear snow away from the outlet — but do not climb on the roof. We'll get a tech out to inspect.",
+    email: "", phone: ""
+  },
+  {
+    id: "fuel-pilot-out",
+    category: "Gas & Propane",
+    title: "Pilot light keeps going out",
+    desc: "Gas or propane pilot won't stay lit on water heater, boiler, or other appliance.",
+    urgency: null,
+    urgencyLabel: null,
+    questions: [
+      "Which appliance — water heater, boiler, furnace, stove?",
+      "How often is the pilot going out?",
+      "Has anyone tried relighting it? How many times?",
+      "Any drafts near the unit, or recent work done in the area?",
+      "Any gas odor when trying to relight?",
+      "Are any carbon monoxide detectors going off?",
+      "When was the unit last serviced?",
+    ],
+    script: "If they smell gas while trying to relight, stop immediately and follow the gas odor emergency guidance. If a CO detector is going off, evacuate and call 911. Otherwise, do not keep relighting the pilot repeatedly — a pilot that won't stay lit usually means a thermocouple, draft, or venting issue that needs a technician. We'll get someone scheduled.",
+    email: "", phone: ""
+  },
+  {
+    id: "propane-line-damage",
+    category: "Gas & Propane",
+    title: "Propane line damaged — plowing or excavation",
+    desc: "Suspected damage to underground or yard propane line after plowing, digging, or yard work.",
+    urgency: "emergency",
+    urgencyLabel: "Emergency — evacuate if odor present",
+    stopCondition: "Do not proceed until everyone is outside if gas odor is present",
+    stopUntil: "If they smell gas, stay on the line until all occupants are outside and away from the building. If no odor, confirm no one is using flames or equipment near the damaged area.",
+    questions: [
+      "Is there a gas or propane odor right now?",
+      "What happened — plowing, digging, vehicle driving over the line area?",
+      "Where on the property is the damage — yard, driveway, near the tank?",
+      "Are any appliances still running?",
+      "Is anyone inside the home?",
+      "Is propane delivered by R. H. Foster?",
+      "Are any carbon monoxide detectors going off?",
+    ],
+    script: "If they smell gas, get everyone out of the house immediately — do not use phones, switches, or vehicles near the leak area. Call 911 once safely outside. If there's no odor but the line is visibly damaged, keep everyone away from the area and do not start any engines or equipment nearby. We'll coordinate emergency service.",
+    email: "", phone: ""
+  },
 
   // ── BOILER & HEATING (remaining) ───────────────────────────────────────
   {
@@ -1792,9 +2057,11 @@ const FAQ = [
       "Any error lights or lockout codes on the boiler?",
       "Has the power to the boiler been checked — circuit breaker, emergency switch?",
       "Is the fuel supply confirmed — oil tank level, propane gauge?",
+      "Is the outside exhaust or intake vent blocked by snow or ice?",
+      "Are any carbon monoxide detectors going off right now?",
       "How cold is it outside and inside right now?",
     ],
-    script: "First things to check while we get a tech dispatched: make sure the boiler's emergency shutoff switch hasn't been accidentally tripped — it's usually a red switch at the top of the basement stairs that looks like a light switch. Check the circuit breaker. If it's an oil system, check the tank gauge. If the boiler has a reset button and has locked out, you can try it once — if it locks out again, leave it. We're treating this as a priority. If the house will drop below freezing before a tech can arrive, let us know.",
+    script: "If any carbon monoxide detectors are going off, get everyone out of the house immediately and call 911 — do not try to reset the boiler. Otherwise, first things to check while we get a tech dispatched: make sure the boiler's emergency shutoff switch hasn't been accidentally tripped — it's usually a red switch at the top of the basement stairs that looks like a light switch. Check the circuit breaker. If it's an oil system, check the tank gauge. Check whether the outside vent is blocked by snow or ice. If the boiler has a reset button and has locked out, you can try it once — if it locks out again, leave it. We're treating this as a priority. If the house will drop below freezing before a tech can arrive, let us know.",
     email: "", phone: ""
   },
   {
@@ -1856,6 +2123,76 @@ const FAQ = [
   let activeCategory = 'All';
   let searchQuery    = '';
 
+  const SEARCH_ALIASES = {
+    'fawcet': 'faucet',
+    'fawcett': 'faucet',
+    'hot water tank': 'water heater',
+    'hwt': 'water heater',
+    'lp': 'propane',
+    'lp gas': 'propane',
+    'furnace': 'boiler heating',
+    'sewer': 'drain sewer',
+    'clogged': 'clog drain',
+    'backing up': 'sewer backup drain',
+    'co': 'carbon monoxide',
+    'carbon monoxide': 'carbon monoxide co',
+    'lockout': 'lockout reset burner boiler',
+    'run out': 'runout empty tank oil propane',
+  };
+
+  function normalizeSearchText(text) {
+    return String(text).toLowerCase()
+      .normalize('NFKD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .replace(/[^a-z0-9\s]/g, ' ')
+      .replace(/\s+/g, ' ')
+      .trim();
+  }
+
+  function expandAliases(query) {
+    let normalized = normalizeSearchText(query);
+    Object.entries(SEARCH_ALIASES).forEach(([alias, replacement]) => {
+      const aliasNorm = normalizeSearchText(alias);
+      if (aliasNorm && normalized.includes(aliasNorm)) {
+        normalized = normalized.replace(aliasNorm, normalizeSearchText(replacement));
+      }
+    });
+    return normalized;
+  }
+
+  function buildSearchIndex(item) {
+    return normalizeSearchText([
+      item.title,
+      item.desc,
+      item.category,
+      item.urgencyLabel || '',
+      item.stopCondition || '',
+      item.questions.join(' '),
+      item.script,
+    ].join(' '));
+  }
+
+  function searchMatches(indexText, query) {
+    if (!query) return true;
+    const q = expandAliases(query);
+    if (!q) return true;
+    if (indexText.includes(q)) return true;
+    return q.split(' ').filter(Boolean).every(token => indexText.includes(token));
+  }
+
+  function recalcOpenAccordion() {
+    document.querySelectorAll('.faq-item.open:not(.hidden)').forEach(el => {
+      const body = el.querySelector('.faq-body');
+      body.style.maxHeight = body.scrollHeight + 'px';
+    });
+  }
+
+  let resizeTimer;
+  window.addEventListener('resize', () => {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(recalcOpenAccordion, 100);
+  });
+
   // ── Build category list ──────────────────────────────────────────────
   const allCats = ['All', ...new Set(FAQ.map(f => f.category))];
 
@@ -1878,13 +2215,21 @@ const FAQ = [
     el.className = 'faq-item';
     el.dataset.id = item.id;
     el.dataset.category = item.category;
-    el.dataset.search = [item.title, item.desc, item.category, item.questions.join(' ')].join(' ').toLowerCase();
+    el.dataset.search = buildSearchIndex(item);
 
     let urgencyHtml = '';
     if (item.urgency) {
       urgencyHtml = `<div class="urgency-flag ${item.urgency === 'emergency' ? 'emergency' : ''}">
         <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
         ${item.urgencyLabel}
+      </div>`;
+    }
+
+    let stopHtml = '';
+    if (item.stopCondition) {
+      stopHtml = `<div class="stop-banner" role="alert">
+        <div class="stop-banner-title">STOP — ${item.stopCondition}</div>
+        ${item.stopUntil ? `<div class="stop-banner-until">${item.stopUntil}</div>` : ''}
       </div>`;
     }
 
@@ -1903,6 +2248,7 @@ const FAQ = [
       </button>
       <div class="faq-body">
         <div class="faq-body-inner">
+          ${stopHtml}
           <div class="faq-questions">
             ${urgencyHtml}
             <div class="faq-section-label">Questions to Ask</div>
@@ -1942,7 +2288,7 @@ const FAQ = [
 
   // ── Filter logic ─────────────────────────────────────────────────────
   function applyFilters() {
-    const q = searchQuery.trim().toLowerCase();
+    const q = searchQuery.trim();
     let visible = 0;
 
     // Remove old highlights
@@ -1951,7 +2297,7 @@ const FAQ = [
       if (!item) return;
 
       const catMatch = activeCategory === 'All' || el.dataset.category === activeCategory;
-      const searchMatch = !q || el.dataset.search.includes(q);
+      const searchMatch = searchMatches(el.dataset.search, q);
       const show = catMatch && searchMatch;
 
       el.classList.toggle('hidden', !show);
@@ -1970,11 +2316,7 @@ const FAQ = [
     });
 
     // Recompute open item height after filter
-    const openItem = document.querySelector('.faq-item.open:not(.hidden)');
-    if (openItem) {
-      const body = openItem.querySelector('.faq-body');
-      body.style.maxHeight = body.scrollHeight + 'px';
-    }
+    recalcOpenAccordion();
 
     metaEl.textContent = q || activeCategory !== 'All'
       ? `${visible} result${visible !== 1 ? 's' : ''}${activeCategory !== 'All' ? ` in ${activeCategory}` : ''}${q ? ` for "${q}"` : ''}`
@@ -1985,7 +2327,9 @@ const FAQ = [
 
   function highlight(text, q) {
     if (!q) return text;
-    const regex = new RegExp(`(${q.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
+    const tokens = expandAliases(q).split(' ').filter(t => t.length > 1);
+    if (!tokens.length) return text;
+    const regex = new RegExp(`(${tokens.map(t => t.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|')})`, 'gi');
     return text.replace(regex, '<mark>$1</mark>');
   }
 
